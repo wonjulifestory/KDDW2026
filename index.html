@@ -489,6 +489,63 @@
       height: auto;
       display: block;
     }
+    /* Room-by-Room Live Status Board */
+    .room-board {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-top: 6px;
+    }
+    .room-row {
+      padding: 10px 12px;
+      border-radius: 13px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      cursor: pointer;
+    }
+    .room-row.is-live {
+      background: #FFF5F7;
+      border-color: #FDA4AF;
+    }
+    .room-row.is-next {
+      background: #F0F9FF;
+      border-color: #BAE6FD;
+    }
+    .room-row-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .room-name {
+      font-size: 12px;
+      font-weight: 800;
+      color: #0F172A;
+    }
+    .room-status {
+      font-size: 10.5px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .room-status.live { background: #E11D48; color: #FFFFFF; }
+    .room-status.next { background: #0284C7; color: #FFFFFF; }
+    .room-status.done { background: #E2E8F0; color: #475569; }
+    .room-session-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1E293B;
+      margin-top: 4px;
+      line-height: 1.35;
+    }
+    .room-session-time {
+      font-size: 11px;
+      color: #64748B;
+      margin-top: 2px;
+      display: flex;
+      justify-content: space-between;
+    }
   </style>
 </head>
 <body>
@@ -968,83 +1025,117 @@
       return { status: 'AFTER', day: 3, kst, items: [] };
     }
 
+        let roomSimMode = false;
+    function toggleRoomSim() {
+      roomSimMode = !roomSimMode;
+      if (roomSimMode) selectedDay = 3;
+      render();
+    }
+
+    function getEffectiveKst() {
+      if (roomSimMode) {
+        return { dateStr: '2026-11-21', hhmm: '10:50', mins: 650 };
+      }
+      return getCurrentKstParts();
+    }
+
+    function renderRoomBoardForDay(dayNum, kst, isKo) {
+      const daySessions = SESSIONS.filter((s) => s.day === dayNum).sort((a, b) => toMin(a.start) - toMin(b.start));
+      const rooms = [...new Set(daySessions.map((s) => s.room))];
+      const rows = rooms.map((room) => {
+        const rs = daySessions.filter((s) => s.room === room);
+        const live = rs.find((s) => kst.mins >= toMin(s.start) && kst.mins < toMin(s.end));
+        if (live) {
+          const total = Math.max(1, toMin(live.end) - toMin(live.start));
+          const pct = Math.min(100, Math.max(5, Math.round(((kst.mins - toMin(live.start)) / total) * 100)));
+          const rem = Math.max(1, toMin(live.end) - kst.mins);
+          return {
+            rank: 0,
+            html: '<div class="room-row is-live" onclick="openDetail(\'' + live.id + '\')">' +
+              '<div class="room-row-top">' +
+                '<span class="room-name">📍 ' + room + '</span>' +
+                '<span class="room-status live">● ' + (isKo ? '진행 중 ' + pct + '%' : 'LIVE ' + pct + '%') + '</span>' +
+              '</div>' +
+              '<div class="room-session-title">' + live.title + '</div>' +
+              '<div class="room-session-time"><span>🕒 ' + live.start + '–' + live.end + '</span><span>' + (isKo ? rem + '분 남음' : rem + 'm left') + '</span></div>' +
+              '<div class="live-progress"><div class="live-progress-bar" style="width:' + pct + '%;"></div></div>' +
+            '</div>'
+          };
+        }
+        const next = rs.find((s) => toMin(s.start) > kst.mins);
+        if (next) {
+          const wait = toMin(next.start) - kst.mins;
+          return {
+            rank: 1,
+            html: '<div class="room-row is-next" onclick="openDetail(\'' + next.id + '\')">' +
+              '<div class="room-row-top">' +
+                '<span class="room-name">📍 ' + room + '</span>' +
+                '<span class="room-status next">⏳ ' + (isKo ? wait + '분 후' : 'in ' + wait + 'm') + '</span>' +
+              '</div>' +
+              '<div class="room-session-title">' + next.title + '</div>' +
+              '<div class="room-session-time"><span>🕒 ' + next.start + '–' + next.end + '</span><span>' + (isKo ? '다음 일정' : 'Up Next') + '</span></div>' +
+            '</div>'
+          };
+        }
+        const last = rs[rs.length - 1];
+        return {
+          rank: 2,
+          html: '<div class="room-row" onclick="openDetail(\'' + last.id + '\')">' +
+            '<div class="room-row-top">' +
+              '<span class="room-name">📍 ' + room + '</span>' +
+              '<span class="room-status done">✓ ' + (isKo ? '종료' : 'Ended') + '</span>' +
+            '</div>' +
+            '<div class="room-session-title" style="color:#64748B;">' + last.title + '</div>' +
+            '<div class="room-session-time"><span>🕒 ' + last.start + '–' + last.end + '</span><span>' + (isKo ? '오늘 일정 완료' : 'Done for today') + '</span></div>' +
+          '</div>'
+        };
+      });
+      rows.sort((a, b) => a.rank - b.rank);
+      return '<div class="room-board">' + rows.map((r) => r.html).join('') + '</div>';
+    }
+
     function renderLiveWidget() {
       const t = T[lang];
-      const st = getLiveState();
+      const isKo = lang === 'ko';
+      const kst = getEffectiveKst();
+      const activeDay = Number(Object.keys(DAY_DATES).find((k) => DAY_DATES[k] === kst.dateStr)) || 0;
+      const simLabel = roomSimMode
+        ? (isKo ? '✕ 현재시간' : '✕ Live Time')
+        : (isKo ? '▶ 방별 미리보기' : '▶ Room Preview');
+      const simBtn = '<button class="sim-btn" style="border:1px solid #CBD5E1;background:#F8FAFC;color:#0F172A;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;cursor:pointer;" onclick="toggleRoomSim()">' + simLabel + '</button>';
 
-      if (st.status === 'LIVE') {
-        return `
-          <section class="live-card">
-            <div class="live-header">
-              <span class="live-pill"><span class="live-dot"></span> ${t.liveNow} (${st.items.length})</span>
-              <span class="live-clock">${t.days[st.day].date} ${st.kst.hhmm} KST</span>
-            </div>
-            ${st.items.map((s) => {
-              const total = Math.max(1, toMin(s.end) - toMin(s.start));
-              const pct = Math.min(100, Math.max(5, Math.round(((st.kst.mins - toMin(s.start)) / total) * 100)));
-              return `
-                <div class="live-item" onclick="openDetail('${s.id}')">
-                  <div class="live-item-title">${s.title}</div>
-                  <div class="live-item-meta">
-                    <span>🕒 ${s.start}–${s.end} · ${s.category}</span>
-                    <span>📍 ${s.room}</span>
-                  </div>
-                  <div class="live-progress"><div class="live-progress-bar" style="width:${pct}%;"></div></div>
-                </div>
-              `;
-            }).join('')}
-          </section>
-        `;
+      if (activeDay > 0) {
+        const liveCnt = SESSIONS.filter((s) => s.day === activeDay && kst.mins >= toMin(s.start) && kst.mins < toMin(s.end)).length;
+        const pillHtml = liveCnt > 0
+          ? '<span class="live-pill"><span class="live-dot"></span> ' + (isKo ? '방별 실시간 현황' : 'Live by Room') + (roomSimMode ? (isKo ? ' · 미리보기' : ' · Demo') : '') + '</span>'
+          : '<span class="live-pill next">📍 ' + (isKo ? '방별 진행 현황' : 'Room Status') + '</span>';
+        return '<section class="live-card ' + (liveCnt > 0 ? '' : 'upcoming') + '">' +
+          '<div class="live-header">' +
+            pillHtml +
+            '<div style="display:flex;align-items:center;gap:6px;"><span class="live-clock">' + t.days[activeDay].date + ' ' + kst.hhmm + '</span>' + simBtn + '</div>' +
+          '</div>' +
+          renderRoomBoardForDay(activeDay, kst, isKo) +
+        '</section>';
       }
 
-      if (st.status === 'UP_NEXT' && st.items.length) {
-        return `
-          <section class="live-card upcoming">
-            <div class="live-header">
-              <span class="live-pill next">⏳ ${t.upNext}${st.diffMin ? ` · ${st.diffMin}${t.startsInMin}` : ''}</span>
-              <span class="live-clock">${st.kst.hhmm} KST</span>
-            </div>
-            ${st.items.map((s) => `
-              <div class="live-item next-item" onclick="openDetail('${s.id}')">
-                <div class="live-item-title">${s.title}</div>
-                <div class="live-item-meta">
-                  <span>🕒 ${t.days[s.day].date} ${s.start}–${s.end}</span>
-                  <span>📍 ${s.room}</span>
-                </div>
-              </div>
-            `).join('')}
-          </section>
-        `;
-      }
+      // Before or after conference: show D-day + Day 1 room overview + preview button
+      const d1 = new Date(DAY_DATES[1] + 'T00:00:00+09:00');
+      const dn = new Date(kst.dateStr + 'T00:00:00+09:00');
+      const isBefore = kst.dateStr < DAY_DATES[1];
+      const dday = Math.max(1, Math.round((d1 - dn) / 86400000));
+      const badgeText = isBefore
+        ? ('D-' + dday + ' · ' + (isKo ? '방별 첫날 일정' : 'Day 1 Rooms'))
+        : ('✓ ' + (isKo ? '학회 종료' : 'Concluded'));
 
-      if (st.status === 'BEFORE') {
-        const first = st.items[0];
-        return `
-          <section class="live-card upcoming">
-            <div class="live-header">
-              <span class="live-pill dday">D-${st.dday} · ${t.beforeEvent}</span>
-              <span class="live-clock">${st.kst.hhmm} KST</span>
-            </div>
-            <div class="live-item next-item" onclick="openDetail('${first.id}')">
-              <div class="live-item-title">${first.title}</div>
-              <div class="live-item-meta">
-                <span>🕒 ${t.days[first.day].date} ${first.start}–${first.end}</span>
-                <span>📍 ${first.room}</span>
-              </div>
-            </div>
-          </section>
-        `;
-      }
-
-      return `
-        <section class="live-card upcoming">
-          <div class="live-header">
-            <span class="live-pill dday">✓ ${t.afterEvent}</span>
-            <span class="live-clock">${st.kst.dateStr} ${st.kst.hhmm}</span>
-          </div>
-          <div style="font-size:12.5px;color:#455A64;line-height:1.45;">${t.afterEventMsg}</div>
-        </section>
-      `;
+      return '<section class="live-card upcoming">' +
+        '<div class="live-header">' +
+          '<span class="live-pill dday">' + badgeText + '</span>' +
+          simBtn +
+        '</div>' +
+        (isBefore
+          ? renderRoomBoardForDay(1, { dateStr: DAY_DATES[1], hhmm: '08:00', mins: 480 }, isKo)
+          : '<div style="font-size:12.5px;color:#455A64;line-height:1.45;">' + t.afterEventMsg + '</div>') +
+      '</section>';
     }
 
     (function initDayByClock() {
@@ -1571,6 +1662,7 @@
   </script>
 </body>
 </html>
+
 
 
 
