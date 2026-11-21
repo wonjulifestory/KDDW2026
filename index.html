@@ -439,6 +439,44 @@
       opacity: 0; pointer-events: none; transition: all 0.2s ease; z-index: 80; white-space: nowrap;
     }
     .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    /* High-visibility Home Screen Buttons Override */
+    .home-menu-grid { gap: 11px !important; }
+    .home-tile {
+      background: #FFFFFF !important;
+      border: 2px solid #9CC5EB !important;
+      border-radius: 20px !important;
+      padding: 18px 8px 16px !important;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.10) !important;
+    }
+    .home-tile-icon {
+      width: 58px !important;
+      height: 58px !important;
+      border-radius: 17px !important;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.16) !important;
+    }
+    .tile-program .home-tile-icon { background: #1B6BB5 !important; color: #FFFFFF !important; }
+    .tile-my .home-tile-icon      { background: #E05A47 !important; color: #FFFFFF !important; }
+    .tile-info .home-tile-icon    { background: #0E8A8A !important; color: #FFFFFF !important; }
+    .home-tile-label {
+      font-size: 14.5px !important;
+      font-weight: 800 !important;
+      color: #0F172A !important;
+    }
+    .home-install-cta {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #ECF4FC;
+      border: 1.5px solid #9CC5EB;
+      color: #0F172A;
+      border-radius: 14px;
+      padding: 12px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -1035,6 +1073,31 @@
       window.location.replace(u.toString());
     }
 
+    function renderHomeInstallBtn() {
+      if (isStandalone) return '';
+      const label = lang === 'ko' ? '📲 홈 화면에 앱으로 추가하기' : '📲 Add to Home Screen';
+      return '<button class="home-install-cta" onclick="openInstallGuide()">' + label + '</button>';
+    }
+
+    function openInstallGuide() {
+      if (deferredPrompt) { triggerInstall(); return; }
+      const isKo = lang === 'ko';
+      document.getElementById('detailContent').innerHTML = isKo
+        ? '<h2 style="font-size:17px;font-weight:800;color:#0F172A;margin:4px 0 10px;">📲 홈 화면에 앱 추가 방법</h2>' +
+          '<div style="font-size:13.5px;line-height:1.8;color:#334155;">' +
+          '<div><b>🍎 아이폰 (Safari):</b> 하단 가운데 <b>공유(↑)</b> → 아래로 스크롤 → <b>홈 화면에 추가</b> → <b>추가</b></div>' +
+          '<div style="margin-top:8px;"><b>🤖 안드로이드 (Chrome):</b> 우측 상단 <b>메뉴(⋮)</b> → <b>홈 화면에 추가 / 앱 설치</b></div>' +
+          '</div>' +
+          '<button class="sheet-cta add" onclick="closeDetail()">확인</button>'
+        : '<h2 style="font-size:17px;font-weight:800;color:#0F172A;margin:4px 0 10px;">📲 Add to Home Screen</h2>' +
+          '<div style="font-size:13.5px;line-height:1.8;color:#334155;">' +
+          '<div><b>🍎 iPhone (Safari):</b> Tap <b>Share (↑)</b> at the bottom → <b>Add to Home Screen</b> → <b>Add</b></div>' +
+          '<div style="margin-top:8px;"><b>🤖 Android (Chrome):</b> Tap <b>Menu (⋮)</b> → <b>Install app / Add to Home screen</b></div>' +
+          '</div>' +
+          '<button class="sheet-cta add" onclick="closeDetail()">OK</button>';
+      document.getElementById('detailBackdrop').classList.add('open');
+    }
+
     function toggleLang() {
       lang = lang === 'ko' ? 'en' : 'ko';
       try { localStorage.setItem(STORAGE_KEY_LANG, lang); } catch (_) {}
@@ -1164,8 +1227,6 @@
               <div class="home-hero-meta">${t.homeMeta}</div>
             </section>
 
-            ${renderLiveWidget()}
-
             <section class="home-menu-grid">
               <button class="home-tile tile-program" onclick="switchTab('program')">
                 <div class="home-tile-icon">
@@ -1202,6 +1263,10 @@
                 <div class="home-tile-label">${t.tileInfo}</div>
               </button>
             </section>
+
+            ${renderHomeInstallBtn()}
+
+            ${renderLiveWidget()}
           </div>
         `;
         return;
@@ -1498,5 +1563,6 @@
   </script>
 </body>
 </html>
+
 
 
