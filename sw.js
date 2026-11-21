@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kddw2026-v2';
+const CACHE_NAME = 'kddw2026-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -31,7 +31,7 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const isDoc = event.request.mode === 'navigate' || event.request.url.endsWith('.html') || event.request.url.endsWith('/');
   event.respondWith(
-    fetch(event.request, isDoc ? { cache: 'no-cache' } : undefined)
+    fetch(event.request, isDoc ? { cache: 'no-store' } : undefined)
       .then((res) => {
         if (res && res.status === 200 && res.type === 'basic') {
           const clone = res.clone();
@@ -42,3 +42,4 @@ self.addEventListener('fetch', (event) => {
       .catch(() => caches.match(event.request).then((c) => c || caches.match('./index.html')))
   );
 });
+

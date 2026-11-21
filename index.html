@@ -450,7 +450,7 @@
           <img src="./assets/logo_kddw2026.png" alt="KDDW 2026" class="brand-logo" />
           <span class="brand-date-pill">Nov 19–21</span>
         </div>
-        <button id="langToggleBtn" class="lang-btn" onclick="toggleLang()">EN</button>
+        <div style="display:flex;align-items:center;gap:6px;"><button class="lang-btn" style="padding:5px 9px;" onclick="forceRefresh()" title="Refresh" aria-label="Refresh">↻</button><button id="langToggleBtn" class="lang-btn" onclick="toggleLang()">EN</button></div>
       </div>
 
       <!-- Smart Install Guide -->
@@ -1018,6 +1018,23 @@
       window.__toastTimer = setTimeout(() => el.classList.remove('show'), 1800);
     }
 
+    async function forceRefresh() {
+      showToast(lang === 'ko' ? '최신 버전 불러오는 중...' : 'Checking for updates...');
+      try {
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map((k) => caches.delete(k)));
+        }
+        if ('serviceWorker' in navigator) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map((r) => r.update()));
+        }
+      } catch (_) {}
+      const u = new URL(window.location.href);
+      u.searchParams.set('v', Date.now());
+      window.location.replace(u.toString());
+    }
+
     function toggleLang() {
       lang = lang === 'ko' ? 'en' : 'ko';
       try { localStorage.setItem(STORAGE_KEY_LANG, lang); } catch (_) {}
@@ -1481,4 +1498,5 @@
   </script>
 </body>
 </html>
+
 
