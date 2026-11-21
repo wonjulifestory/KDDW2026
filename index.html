@@ -1,0 +1,1472 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>KDDW 2026 — Program &amp; My Schedule</title>
+  <meta name="description" content="The 10th Korea Digestive Disease Week (Nov 19–21, 2026, Grand Walkerhill Seoul)" />
+  <meta name="theme-color" content="#0F3D6E" />
+
+  <!-- PWA & iOS Home Screen Meta -->
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/png" href="./assets/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="KDDW 2026" />
+  <meta name="mobile-web-app-capable" content="yes" />
+
+  <style>
+    :root {
+      --kddw-navy: #0F3D6E;
+      --kddw-cobalt: #1B6BB5;
+      --kddw-sky: #2E9BDA;
+      --kddw-soft: #ECF4FC;
+      --kddw-border-blue: #C8E0F4;
+      --kddw-coral: #E05A47;
+      --kddw-coral-soft: #FEF2F0;
+      --kddw-teal: #0E8A8A;
+      --kddw-charcoal: #263238;
+      --kddw-slate: #546E7A;
+      --kddw-border: #E2E8F0;
+      --kddw-bg: #F4F7FA;
+
+      /* Track Pastel Colors */
+      --pastel-blue: #EBF5FD;
+      --pastel-teal: #E8F7F7;
+      --pastel-green: #ECF7EE;
+      --pastel-orange: #FFF2E6;
+      --pastel-purple: #F3EEF9;
+      --pastel-pink: #FDEEF2;
+      --pastel-yellow: #FFFDEB;
+      --pastel-gray: #FFFFFF;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: var(--kddw-bg);
+      color: var(--kddw-charcoal);
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .app-shell {
+      max-width: 520px;
+      margin: 0 auto;
+      min-height: 100%;
+      background: var(--kddw-bg);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 32px rgba(15, 61, 110, 0.06);
+    }
+
+    /* Sticky Header */
+    .top-header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: #FFFFFF;
+      border-bottom: 1px solid var(--kddw-border);
+      padding-top: env(safe-area-inset-top);
+    }
+
+    .brand-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px 10px;
+      gap: 10px;
+    }
+
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      cursor: pointer;
+    }
+
+    .brand-logo {
+      height: 26px;
+      width: auto;
+      display: block;
+    }
+
+    .brand-date-pill {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--kddw-navy);
+      background: var(--kddw-soft);
+      padding: 3px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .lang-btn {
+      border: 1.5px solid var(--kddw-cobalt);
+      background: #FFFFFF;
+      color: var(--kddw-cobalt);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 11px;
+      border-radius: 999px;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .lang-btn:active { background: var(--kddw-cobalt); color: #FFFFFF; }
+
+    /* Sub-header Strip */
+    .sub-bar {
+      background: linear-gradient(90deg, #0F3D6E 0%, #1B6BB5 100%);
+      color: #FFFFFF;
+      padding: 10px 16px 12px;
+    }
+    .sub-bar.hidden { display: none; }
+
+    .page-title { font-size: 16px; font-weight: 800; letter-spacing: -0.02em; }
+    .page-subtitle { font-size: 11.5px; opacity: 0.92; margin-top: 2px; }
+
+    .search-box { margin-top: 10px; position: relative; }
+    .search-input {
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+      padding: 9px 34px 9px 12px;
+      font-size: 13px;
+      background: rgba(255, 255, 255, 0.96);
+      color: var(--kddw-charcoal);
+      outline: none;
+    }
+    .search-input::placeholder { color: #78909C; }
+    .search-clear {
+      position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+      border: none; background: transparent; color: #78909C; font-size: 14px;
+      cursor: pointer; padding: 4px; display: none;
+    }
+    .search-clear.visible { display: block; }
+
+    /* Install Banner */
+    .install-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: var(--kddw-soft);
+      border-bottom: 1px solid var(--kddw-border-blue);
+      padding: 9px 14px;
+      font-size: 12px;
+      color: var(--kddw-charcoal);
+    }
+    .install-banner.show { display: flex; }
+    .install-btn {
+      background: var(--kddw-cobalt); color: #FFFFFF; border: none;
+      border-radius: 8px; padding: 6px 10px; font-size: 12px; font-weight: 700;
+      white-space: nowrap; cursor: pointer;
+    }
+    .install-close { background: transparent; border: none; color: #78909C; font-size: 15px; padding: 2px 4px; cursor: pointer; }
+
+    /* Day Tabs */
+    .day-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background: #EEF2F6;
+      border-bottom: 1px solid var(--kddw-border);
+    }
+    .day-tab {
+      border: none; background: transparent; padding: 10px 6px; cursor: pointer;
+      text-align: center; color: var(--kddw-slate); border-bottom: 3px solid transparent;
+    }
+    .day-tab.active {
+      background: #FFFFFF; color: var(--kddw-navy); font-weight: 800;
+      border-bottom-color: var(--kddw-cobalt);
+    }
+    .day-tab-main { font-size: 13px; font-weight: 700; }
+    .day-tab-sub { font-size: 11px; margin-top: 2px; opacity: 0.85; }
+
+    /* Filter Chips */
+    .chip-row {
+      display: flex; gap: 6px; padding: 10px 14px; background: #FFFFFF;
+      border-bottom: 1px solid var(--kddw-border); overflow-x: auto;
+    }
+    .chip {
+      border: 1px solid #CBD5E1; background: #FFFFFF; color: var(--kddw-slate);
+      font-size: 12px; font-weight: 600; padding: 5px 11px; border-radius: 999px;
+      white-space: nowrap; cursor: pointer;
+    }
+    .chip.active { background: var(--kddw-navy); border-color: var(--kddw-navy); color: #FFFFFF; }
+
+    /* Main Content Area */
+    .main-content {
+      flex: 1;
+      padding: 14px 14px calc(86px + env(safe-area-inset-bottom));
+    }
+
+    /* HOME SCREEN — Minimal & Clean */
+    .home-wrap { display: flex; flex-direction: column; gap: 16px; padding-top: 6px; }
+    .home-hero {
+      background: linear-gradient(135deg, #0F3D6E 0%, #1B6BB5 60%, #2E9BDA 100%);
+      color: #FFFFFF;
+      border-radius: 22px;
+      padding: 24px 20px 22px;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(15, 61, 110, 0.16);
+    }
+    .home-hero-kicker {
+      display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+      background: rgba(255, 255, 255, 0.18); padding: 4px 11px; border-radius: 999px;
+    }
+    .home-hero-theme {
+      font-size: 18px; font-weight: 800; color: #FFFFFF; margin-top: 12px;
+      line-height: 1.4; letter-spacing: -0.02em;
+    }
+    .home-hero-meta { margin-top: 12px; font-size: 12.5px; font-weight: 600; color: rgba(255, 255, 255, 0.92); }
+
+    /* LIVE Now / Up Next Card */
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(1.25); }
+    }
+    .live-card {
+      background: #FFFFFF;
+      border: 1.5px solid #FAD2CC;
+      border-radius: 18px;
+      padding: 13px 15px;
+      box-shadow: 0 4px 14px rgba(225, 29, 72, 0.09);
+    }
+    .live-card.upcoming {
+      border-color: var(--kddw-border-blue);
+      box-shadow: 0 4px 14px rgba(27, 107, 181, 0.08);
+    }
+    .live-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px;
+    }
+    .live-pill {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 11px; font-weight: 800;
+      color: #FFFFFF; background: #E11D48; padding: 3px 9px; border-radius: 999px;
+    }
+    .live-pill.next { background: var(--kddw-cobalt); }
+    .live-pill.dday { background: var(--kddw-navy); }
+    .live-dot {
+      width: 7px; height: 7px; border-radius: 50%; background: #FFFFFF;
+      animation: pulseDot 1.3s infinite ease-in-out;
+    }
+    .live-clock { font-size: 11.5px; font-weight: 700; color: var(--kddw-slate); font-variant-numeric: tabular-nums; }
+    .live-item {
+      padding: 9px 11px; border-radius: 12px; background: #FFF5F7;
+      border: 1px solid #FAD3DC; cursor: pointer; margin-top: 6px;
+    }
+    .live-item.next-item { background: var(--kddw-soft); border-color: var(--kddw-border-blue); }
+    .live-item-title { font-size: 13.5px; font-weight: 800; color: #111827; line-height: 1.35; }
+    .live-item-meta {
+      font-size: 11.5px; color: #455A64; margin-top: 3px;
+      display: flex; justify-content: space-between; gap: 6px;
+    }
+    .live-progress { height: 4px; background: #FDE2E7; border-radius: 999px; margin-top: 7px; overflow: hidden; }
+    .live-progress-bar { height: 100%; background: #E11D48; border-radius: 999px; }
+
+    /* 3 Main Icon Tiles */
+    .home-menu-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .home-tile {
+      background: #FFFFFF; border: 1px solid var(--kddw-border); border-radius: 20px;
+      padding: 20px 8px 18px; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 10px; cursor: pointer; position: relative;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+    }
+    .home-tile:active { transform: scale(0.96); }
+    .home-tile-icon { width: 54px; height: 54px; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+    .tile-program .home-tile-icon { background: var(--pastel-blue); color: var(--kddw-cobalt); }
+    .tile-my .home-tile-icon      { background: var(--pastel-pink); color: var(--kddw-coral); }
+    .tile-info .home-tile-icon    { background: var(--pastel-teal); color: var(--kddw-teal); }
+    .home-tile-label { font-size: 14px; font-weight: 800; color: var(--kddw-charcoal); text-align: center; }
+    .home-tile-badge {
+      position: absolute; top: 10px; right: 10px; background: var(--kddw-coral); color: #FFFFFF;
+      font-size: 11px; font-weight: 800; padding: 2px 7px; border-radius: 999px; min-width: 22px; text-align: center;
+    }
+
+    /* Session Cards */
+    .session-list { display: flex; flex-direction: column; gap: 10px; }
+    .session-card {
+      background: #FFFFFF; border-radius: 16px; border: 1px solid var(--kddw-border);
+      border-left: 5px solid var(--kddw-cobalt); padding: 13px 14px; cursor: pointer; position: relative;
+    }
+    .session-card:active { transform: scale(0.99); }
+    .session-card.saved { box-shadow: 0 3px 12px rgba(27, 107, 181, 0.14); border-color: var(--kddw-border-blue); }
+    .session-card.is-live {
+      border: 2px solid #E11D48;
+      border-left: 6px solid #E11D48;
+      box-shadow: 0 4px 16px rgba(225, 29, 72, 0.16);
+    }
+
+    .tone-blue   { background: var(--pastel-blue);   border-left-color: #1B6BB5; }
+    .tone-teal   { background: var(--pastel-teal);   border-left-color: #0E8A8A; }
+    .tone-green  { background: var(--pastel-green);  border-left-color: #2E7D32; }
+    .tone-orange { background: var(--pastel-orange); border-left-color: #D97706; }
+    .tone-purple { background: var(--pastel-purple); border-left-color: #7E57C2; }
+    .tone-pink   { background: var(--pastel-pink);   border-left-color: #E05A47; }
+    .tone-yellow { background: var(--pastel-yellow); border-left-color: #CA8A04; }
+    .tone-gray   { background: #FFFFFF;              border-left-color: #90A4AE; }
+
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .badges { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
+    .time-badge { font-size: 12px; font-weight: 800; color: var(--kddw-navy); font-variant-numeric: tabular-nums; }
+    .cat-badge {
+      font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 6px;
+      background: rgba(255, 255, 255, 0.88); color: var(--kddw-charcoal);
+      border: 1px solid rgba(15, 61, 110, 0.1);
+    }
+    .live-inline-badge {
+      display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 800;
+      padding: 2px 7px; border-radius: 6px; background: #E11D48; color: #FFFFFF;
+    }
+    .conflict-badge {
+      font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 6px;
+      background: var(--kddw-coral); color: #FFFFFF;
+    }
+    .star-btn {
+      width: 34px; height: 34px; border-radius: 50%; border: none;
+      background: rgba(255, 255, 255, 0.9); color: #90A4AE; font-size: 19px; line-height: 1;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    .star-btn.saved { background: #FFF8E1; color: #F59E0B; }
+    .card-title { font-size: 14.5px; font-weight: 800; color: #111827; margin-top: 6px; line-height: 1.35; }
+    .card-sub { font-size: 12.5px; color: #455A64; margin-top: 3px; line-height: 1.35; }
+    .card-footer {
+      margin-top: 9px; display: flex; align-items: center; justify-content: space-between;
+      font-size: 12px; color: #37474F; font-weight: 600;
+    }
+    .card-more { color: var(--kddw-cobalt); font-weight: 700; }
+
+    /* My Schedule */
+    .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 10px; }
+    .summary-pill {
+      background: rgba(255, 255, 255, 0.16); border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 12px; padding: 7px 6px; text-align: center; cursor: pointer;
+    }
+    .summary-pill.active { background: #FFFFFF; color: var(--kddw-navy); }
+    .summary-pill-day { font-size: 11px; font-weight: 600; opacity: 0.9; }
+    .summary-pill-num { font-size: 15px; font-weight: 800; margin-top: 1px; }
+
+    .timeline {
+      position: relative; padding-left: 20px; margin-left: 6px;
+      border-left: 2.5px solid var(--kddw-border-blue); display: flex; flex-direction: column; gap: 12px;
+    }
+    .timeline-item { position: relative; }
+    .timeline-dot {
+      position: absolute; left: -27.5px; top: 16px; width: 13px; height: 13px; border-radius: 50%;
+      background: var(--kddw-cobalt); border: 2.5px solid #FFFFFF; box-shadow: 0 0 0 2px var(--kddw-border-blue);
+    }
+    .timeline-dot.conflict { background: var(--kddw-coral); box-shadow: 0 0 0 2px #FAD2CC; }
+
+    .empty-state {
+      background: #FFFFFF; border: 1px dashed #CBD5E1; border-radius: 18px;
+      padding: 36px 20px; text-align: center; color: var(--kddw-slate);
+    }
+    .empty-icon { font-size: 36px; margin-bottom: 8px; }
+    .empty-text { font-size: 13.5px; line-height: 1.5; white-space: pre-line; }
+    .primary-btn {
+      margin-top: 14px; background: var(--kddw-cobalt); color: #FFFFFF; border: none;
+      border-radius: 12px; padding: 10px 18px; font-size: 13px; font-weight: 700; cursor: pointer;
+    }
+
+    /* Info / Venue Cards */
+    .venue-card {
+      background: #FFFFFF; border-radius: 18px; border: 1px solid var(--kddw-border);
+      overflow: hidden; margin-bottom: 12px;
+    }
+    .venue-body { padding: 15px 16px; }
+    .venue-kicker { font-size: 11px; font-weight: 800; color: var(--kddw-cobalt); letter-spacing: 0.04em; }
+    .venue-name { font-size: 17px; font-weight: 800; color: var(--kddw-navy); margin-top: 3px; }
+    .venue-addr { font-size: 13px; color: var(--kddw-slate); margin-top: 5px; line-height: 1.45; }
+    .btn-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 12px; }
+    .action-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+      text-decoration: none; border: none; border-radius: 11px; padding: 10px 12px;
+      font-size: 12.5px; font-weight: 700; cursor: pointer;
+    }
+    .action-primary { background: var(--kddw-cobalt); color: #FFFFFF; }
+    .action-soft { background: var(--kddw-soft); color: var(--kddw-navy); }
+    .action-outline { background: #F5F7F9; color: var(--kddw-charcoal); border: 1px solid var(--kddw-border); }
+    .section-heading { font-size: 14px; font-weight: 800; color: var(--kddw-navy); margin-bottom: 10px; }
+    .hall-box { background: var(--kddw-soft); border: 1px solid var(--kddw-border-blue); border-radius: 12px; padding: 11px 12px; }
+    .hall-desc { font-size: 12.5px; color: #455A64; line-height: 1.6; }
+
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 100%; max-width: 520px; background: #FFFFFF; border-top: 1px solid var(--kddw-border);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      padding: 7px 6px calc(8px + env(safe-area-inset-bottom)); z-index: 40;
+    }
+    .nav-btn {
+      border: none; background: transparent; display: flex; flex-direction: column; align-items: center;
+      gap: 3px; color: #607D8B; font-size: 11px; font-weight: 600; cursor: pointer; padding: 2px 0;
+    }
+    .nav-pill { padding: 3px 13px; border-radius: 999px; font-size: 15px; display: inline-flex; align-items: center; gap: 3px; }
+    .nav-btn.active { color: var(--kddw-navy); font-weight: 800; }
+    .nav-btn.active .nav-pill { background: var(--kddw-soft); color: var(--kddw-cobalt); }
+    .nav-count { font-size: 10.5px; font-weight: 800; background: var(--kddw-coral); color: #FFFFFF; padding: 1px 5.5px; border-radius: 999px; }
+
+    /* Detail Bottom Sheet */
+    .sheet-backdrop {
+      position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); z-index: 60;
+      display: none; align-items: flex-end; justify-content: center;
+    }
+    .sheet-backdrop.open { display: flex; }
+    .sheet {
+      width: 100%; max-width: 520px; max-height: 85vh; background: #FFFFFF;
+      border-radius: 24px 24px 0 0; padding: 12px 18px calc(20px + env(safe-area-inset-bottom));
+      overflow-y: auto; box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
+    }
+    .sheet-handle { width: 40px; height: 4px; border-radius: 999px; background: #CBD5E1; margin: 0 auto 12px; }
+    .detail-table { width: 100%; border-collapse: collapse; margin-top: 12px; border-top: 2px solid var(--kddw-border-blue); font-size: 12.5px; }
+    .detail-table th, .detail-table td { padding: 9px 10px; border-bottom: 1px solid #E4E4E4; text-align: left; vertical-align: top; }
+    .detail-table th { width: 88px; background: var(--kddw-soft); color: var(--kddw-navy); font-weight: 700; }
+    .talk-list { margin: 0; padding-left: 16px; display: flex; flex-direction: column; gap: 6px; }
+    .sheet-cta { width: 100%; margin-top: 16px; padding: 13px; border-radius: 14px; border: none; font-size: 14px; font-weight: 800; cursor: pointer; }
+    .sheet-cta.add { background: var(--kddw-cobalt); color: #FFFFFF; }
+    .sheet-cta.remove { background: var(--kddw-coral-soft); color: var(--kddw-coral); border: 1.5px solid #FAD2CC; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: calc(82px + env(safe-area-inset-bottom)); left: 50%;
+      transform: translateX(-50%) translateY(16px); background: var(--kddw-charcoal); color: #FFFFFF;
+      padding: 9px 16px; border-radius: 999px; font-size: 12.5px; font-weight: 600;
+      opacity: 0; pointer-events: none; transition: all 0.2s ease; z-index: 80; white-space: nowrap;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sticky Header -->
+    <header class="top-header">
+      <div class="brand-bar">
+        <div class="brand-left" onclick="switchTab('home')">
+          <img src="./assets/logo_kddw2026.png" alt="KDDW 2026" class="brand-logo" />
+          <span class="brand-date-pill">Nov 19–21</span>
+        </div>
+        <button id="langToggleBtn" class="lang-btn" onclick="toggleLang()">EN</button>
+      </div>
+
+      <!-- Smart Install Guide -->
+      <div id="installBanner" class="install-banner">
+        <span id="installMsg"></span>
+        <div style="display:flex;align-items:center;gap:4px;">
+          <button id="installActionBtn" class="install-btn" style="display:none;" onclick="triggerInstall()"></button>
+          <button class="install-close" onclick="dismissInstall()" aria-label="Close">✕</button>
+        </div>
+      </div>
+
+      <!-- Dynamic Sub-Header -->
+      <div class="sub-bar hidden" id="subHeader"></div>
+
+      <!-- Dynamic Day Tabs & Filters -->
+      <div id="dayTabsContainer"></div>
+      <div id="filterContainer"></div>
+    </header>
+
+    <!-- Main Body -->
+    <main class="main-content" id="mainContent"></main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" id="nav-home" onclick="switchTab('home')">
+        <span class="nav-pill">🏠</span>
+        <span data-i18n="navHome">홈</span>
+      </button>
+      <button class="nav-btn" id="nav-program" onclick="switchTab('program')">
+        <span class="nav-pill">📅</span>
+        <span data-i18n="navProgram">프로그램</span>
+      </button>
+      <button class="nav-btn" id="nav-my" onclick="switchTab('my')">
+        <span class="nav-pill">★ <span class="nav-count" id="savedCountBadge">0</span></span>
+        <span data-i18n="navMy">내 스케줄</span>
+      </button>
+      <button class="nav-btn" id="nav-venue" onclick="switchTab('venue')">
+        <span class="nav-pill">ℹ️</span>
+        <span data-i18n="navInfo">정보</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- Session Detail Bottom Sheet -->
+  <div class="sheet-backdrop" id="detailBackdrop" onclick="closeDetail(event)">
+    <div class="sheet" onclick="event.stopPropagation()">
+      <div class="sheet-handle"></div>
+      <div id="detailContent"></div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const STORAGE_KEY_SAVED = 'kddw2026_saved_sessions_v1';
+    const STORAGE_KEY_LANG = 'kddw2026_lang_v1';
+
+    let lang = localStorage.getItem(STORAGE_KEY_LANG) || 'ko';
+    let currentTab = 'home';
+    let selectedDay = 3;
+    let mySelectedDay = 3;
+    let trackFilter = 'ALL';
+    let searchQuery = '';
+    let deferredPrompt = null;
+
+    let savedIds = new Set();
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY_SAVED);
+      if (raw) savedIds = new Set(JSON.parse(raw));
+    } catch (_) {}
+
+    function persistSaved() {
+      try { localStorage.setItem(STORAGE_KEY_SAVED, JSON.stringify([...savedIds])); } catch (_) {}
+    }
+
+    const T = {
+      ko: {
+        navHome: '홈',
+        navProgram: '프로그램',
+        navMy: '내 스케줄',
+        navInfo: '정보',
+        homeMeta: '2026. 11. 19(목) – 11. 21(토) · 그랜드 워커힐 서울',
+        tileProgram: '프로그램',
+        tileMy: '내 스케줄',
+        tileInfo: '정보',
+        programTitle: '학술 프로그램',
+        programSub: 'The 10th Korea Digestive Disease Week (KDDW 2026)',
+        myTitle: '내 스케줄',
+        mySub: '프로그램에서 ★을 누르면 자동으로 정리됩니다',
+        venueTitle: '행사 정보 및 교통 안내',
+        venueSub: '그랜드 워커힐 서울 · 2026. 11. 19(목) ~ 11. 21(토)',
+        searchPlaceholder: '학회, 연자, 주제 검색 (예: KSG, KASL, IBD, ESD, FD)',
+        searchAllDaysHint: '전체 일정(Day 1–3) 검색 결과',
+        allTracks: '전체 트랙',
+        trackGI: '상·하부위장관',
+        trackLiver: '간·췌담도',
+        trackEndo: '내시경',
+        trackMotility: '기능성·운동',
+        liveNow: '지금 진행 중',
+        upNext: '다음 일정',
+        beforeEvent: '학회 예정',
+        afterEvent: '학회 종료',
+        afterEventMsg: 'KDDW 2026 학술대회가 종료되었습니다. 프로그램과 내 스케줄은 계속 열람할 수 있습니다.',
+        startsInMin: '분 후 시작',
+        conflict: '시간 겹침',
+        details: '상세 ›',
+        days: {
+          1: { short: 'Day 1', date: '11/19 (목)' },
+          2: { short: 'Day 2', date: '11/20 (금)' },
+          3: { short: 'Day 3', date: '11/21 (토)' }
+        },
+        savedUnit: '개',
+        emptyMy: '이 날짜에 선택한 세션이 아직 없습니다.\n프로그램 탭에서 관심 세션의 ★ 버튼을 눌러 담아보세요!',
+        goProgram: '프로그램 보러가기',
+        noSearch: '검색 조건에 맞는 세션이 없습니다.',
+        thTime: '일시',
+        thRoom: '장소',
+        thTrack: '학회/분야',
+        thTalks: '세부 내용',
+        addToMy: '★ 내 스케줄에 담기',
+        removeFromMy: '내 스케줄에서 제외',
+        toastAdded: '내 스케줄에 추가되었습니다',
+        toastRemoved: '내 스케줄에서 제외되었습니다',
+        toastCopied: '주소가 복사되었습니다',
+        iosInstall: '📲 아이폰 설치: Safari 공유(↑) → "홈 화면에 추가"',
+        androidInstall: '📲 홈 화면에 KDDW 2026 앱으로 바로 설치하세요',
+        installBtn: '앱 설치',
+        venueKicker: 'CONGRESS VENUE · 공식 행사장',
+        venueName: '그랜드 워커힐 서울 (Grand Walkerhill Seoul)',
+        venueAddr: '서울특별시 광진구 워커힐로 177',
+        openGoogleMap: '구글 지도',
+        openNaverMap: '네이버 지도',
+        openKakaoMap: '카카오맵',
+        copyAddr: '주소 복사',
+        shuttleTitle: '워커힐 무료 셔틀버스 안내',
+        shuttleDesc: '• 지하철 5호선 광나루역 2번 출구 / 2호선 강변역 1번 출구 ↔ 그랜드 워커힐 서울 (약 10~15분 간격 운행)',
+        societiesTitle: '주최 및 주관 (8개 소화기 연관학회)',
+        societiesList: '대한소화기학회(KSG) · 대한소화기내시경학회(KSGE) · 대한간학회(KASL) · 대한췌장담도학회(KPBA) · 대한소화기기능성질환·운동학회(KSNM) · 대한상부위장관·헬리코박터학회(KCHUGR) · 대한장연구학회(KASID) · 대한소화기암연구학회(KSGC)',
+        officialTitle: '공식 홈페이지',
+        openWeb: 'kddw.org 열기 ↗'
+      },
+      en: {
+        navHome: 'Home',
+        navProgram: 'Program',
+        navMy: 'My Schedule',
+        navInfo: 'Info',
+        homeMeta: 'NOV 19 (THU) – 21 (SAT), 2026 · Grand Walkerhill Seoul',
+        tileProgram: 'Program',
+        tileMy: 'My Schedule',
+        tileInfo: 'Info',
+        programTitle: 'Scientific Program',
+        programSub: 'The 10th Korea Digestive Disease Week (KDDW 2026)',
+        myTitle: 'My Schedule',
+        mySub: 'Tap ★ on any session to build your personal timeline',
+        venueTitle: 'Venue & Information',
+        venueSub: 'Grand Walkerhill Seoul · Nov 19–21, 2026',
+        searchPlaceholder: 'Search society, speaker, topic (e.g. KSG, KASL, IBD, ESD)',
+        searchAllDaysHint: 'Search results across all days (Day 1–3)',
+        allTracks: 'All Tracks',
+        trackGI: 'Upper/Lower GI',
+        trackLiver: 'Liver / PB',
+        trackEndo: 'Endoscopy',
+        trackMotility: 'Motility / DGBI',
+        liveNow: 'LIVE NOW',
+        upNext: 'UP NEXT',
+        beforeEvent: 'UPCOMING',
+        afterEvent: 'CONCLUDED',
+        afterEventMsg: 'KDDW 2026 has concluded. You can still browse the program and your saved schedule.',
+        startsInMin: ' min left',
+        conflict: 'Time Conflict',
+        details: 'Details ›',
+        days: {
+          1: { short: 'Day 1', date: 'Nov 19 (Thu)' },
+          2: { short: 'Day 2', date: 'Nov 20 (Fri)' },
+          3: { short: 'Day 3', date: 'Nov 21 (Sat)' }
+        },
+        savedUnit: ' saved',
+        emptyMy: 'No sessions selected for this day yet.\nTap ★ on any session in Program to add it automatically!',
+        goProgram: 'Browse Program',
+        noSearch: 'No sessions match your filter.',
+        thTime: 'Date & Time',
+        thRoom: 'Room',
+        thTrack: 'Society',
+        thTalks: 'Overview',
+        addToMy: '★ Add to My Schedule',
+        removeFromMy: 'Remove from My Schedule',
+        toastAdded: 'Added to My Schedule',
+        toastRemoved: 'Removed from My Schedule',
+        toastCopied: 'Address copied to clipboard',
+        iosInstall: '📲 iPhone Install: Share (↑) → "Add to Home Screen"',
+        androidInstall: '📲 Install KDDW 2026 directly to your Home Screen',
+        installBtn: 'Install',
+        venueKicker: 'CONGRESS VENUE',
+        venueName: 'Grand Walkerhill Seoul',
+        venueAddr: '177, Walkerhill-ro, Gwangjin-gu, Seoul, Korea',
+        openGoogleMap: 'Google Maps',
+        openNaverMap: 'Naver Map',
+        openKakaoMap: 'KakaoMap',
+        copyAddr: 'Copy Address',
+        shuttleTitle: 'Walkerhill Free Shuttle Bus',
+        shuttleDesc: '• Gwangnaru Stn (Line 5, Exit 2) & Gangbyeon Stn (Line 2, Exit 1) ↔ Grand Walkerhill Seoul (Every ~10–15 min)',
+        societiesTitle: 'Hosting & Participating Societies (8 Societies)',
+        societiesList: 'KSG · KSGE · KASL · KPBA · KSNM · KCHUGR · KASID · KSGC',
+        officialTitle: 'Official Website',
+        openWeb: 'Visit kddw.org ↗'
+      }
+    };
+
+    // --- KDDW 2026 Real Schedule (Nov 19-21, 2026) ---
+    const SESSIONS = [
+      // DAY 1 — Nov 19 (Thu)
+      {
+        id: 'd1-open', day: 1, start: '09:00', end: '10:30', tone: 'blue', track: 'GI',
+        category: 'Opening & Combined 01',
+        title: 'Opening Ceremony & Combined Symposium 01',
+        subtitle: 'Opening address & multidisciplinary highlights of KDDW 2026',
+        room: 'Grand Hall 1 (B1F)', aliases: '개회식 통합 심포지엄 KSG',
+        talks: ['Opening Ceremony of the 10th KDDW', 'Combined Symposium 01']
+      },
+      {
+        id: 'd1-s1', day: 1, start: '10:50', end: '12:20', tone: 'green', track: 'LIVER',
+        category: 'Symposium (KASL)',
+        title: 'Advances in Chronic Liver Disease & HCC Management',
+        subtitle: 'Updated systemic & locoregional therapies in hepatology',
+        room: 'Grand Hall 2 (B1F)', aliases: '간학회 간암 간질환 KASL',
+        talks: ['Modern systemic therapy & biomarkers in HCC']
+      },
+      {
+        id: 'd1-s2', day: 1, start: '14:00', end: '15:30', tone: 'purple', track: 'ENDO',
+        category: 'Symposium (KSGE)',
+        title: 'Next-Generation Therapeutic Endoscopy',
+        subtitle: 'Third-space endoscopy & endoscopic resection innovations',
+        room: 'Vista Hall 1 (B2F)', aliases: '소화기내시경 내시경 KSGE',
+        talks: ['Third-space endoscopy & ESD clinical pearls']
+      },
+
+      // DAY 2 — Nov 20 (Fri)
+      {
+        id: 'd2-plenary', day: 2, start: '09:00', end: '10:30', tone: 'pink', track: 'GI',
+        category: 'Plenary Session',
+        title: 'KDDW 2026 Plenary Session',
+        subtitle: 'Top-scored international abstracts across 8 digestive societies',
+        room: 'Grand Hall 1 (B1F)', aliases: '플레너리 기조강연 우수연제',
+        talks: ['Selected Plenary Oral Presentations & Best Abstract Awards']
+      },
+      {
+        id: 'd2-comb2', day: 2, start: '10:50', end: '12:20', tone: 'blue', track: 'GI',
+        category: 'Combined Symposium 02',
+        title: 'Combined Symposium 02: Precision Oncology in GI Tract',
+        subtitle: 'Biomarker-driven strategies across upper & lower GI cancers',
+        room: 'Grand Hall 1 (B1F)', aliases: '통합 심포지엄 소화기암 정밀의료 KSGC',
+        talks: ['Precision oncology & multidisciplinary tumor board perspectives']
+      },
+      {
+        id: 'd2-pb', day: 2, start: '14:00', end: '15:30', tone: 'green', track: 'LIVER',
+        category: 'Symposium (KPBA)',
+        title: 'Interventional EUS & ERCP Mastery',
+        subtitle: 'Current clinical standards in pancreatobiliary endoscopy',
+        room: 'Vista Hall 2 (B2F)', aliases: '췌장담도학회 내시경초음파 KPBA ERCP EUS',
+        talks: ['EUS-guided drainage and complex biliary interventions']
+      },
+
+      // DAY 3 — Nov 21 (Sat — LIVE TODAY!)
+      {
+        id: 'd3-s16', day: 3, start: '08:30', end: '10:00', tone: 'blue', track: 'GI',
+        category: 'Symposium 16 (KSG)',
+        title: 'Advancing early detection and precision screening in GI cancers',
+        subtitle: 'From risk stratification to real-world implementation',
+        room: 'Grand Hall 1 (B1F)', aliases: '소화기학회 위장관암 조기발견 선별검사 KSG',
+        talks: ['Risk stratification & precision GI cancer screening in real-world practice']
+      },
+      {
+        id: 'd3-s17', day: 3, start: '08:30', end: '10:00', tone: 'green', track: 'LIVER',
+        category: 'Symposium 17 (KASL)',
+        title: 'The augmented hepatologist: Navigating the AI frontier',
+        subtitle: 'Artificial intelligence applications in liver imaging & care',
+        room: 'Grand Hall 2 (B1F)', aliases: '간학회 인공지능 AI 간질환 KASL',
+        talks: ['AI diagnostics, digital pathology & clinical decision support in hepatology']
+      },
+      {
+        id: 'd3-s18', day: 3, start: '08:30', end: '10:00', tone: 'teal', track: 'GI',
+        category: 'Symposium 18 (KASID)',
+        title: 'Update on IBD guidelines 2026',
+        subtitle: "What's new in KASID guidelines and beyond",
+        room: 'Grand Hall 3 (B1F)', aliases: '장연구학회 염증성장질환 가이드라인 KASID IBD',
+        talks: ['2026 KASID clinical practice guideline updates for UC & Crohn disease']
+      },
+      {
+        id: 'd3-pg01', day: 3, start: '08:30', end: '10:00', tone: 'pink', track: 'GI',
+        category: 'PG Course 01 (KSGC)',
+        title: 'Immune and targeted therapies in gastrointestinal cancers',
+        subtitle: 'Essentials for clinical practice',
+        room: 'Vista Hall 1 (B2F)', aliases: '소화기암연구학회 면역항암제 표적치료 KSGC',
+        talks: ['Practical essentials of immunotherapy & targeted agents in GI oncology']
+      },
+      {
+        id: 'd3-s19', day: 3, start: '08:30', end: '10:00', tone: 'green', track: 'LIVER',
+        category: 'Symposium 19 (KPBA)',
+        title: 'Cutting edges on diagnosis & management of benign biliary stricture',
+        subtitle: 'Endoscopic and multidisciplinary approaches',
+        room: 'Vista Hall 2 (B2F)', aliases: '췌장담도학회 양성담도협착 KPBA',
+        talks: ['Diagnostic workup and endoscopic stenting for benign biliary strictures']
+      },
+      {
+        id: 'd3-s20', day: 3, start: '08:30', end: '10:00', tone: 'teal', track: 'GI',
+        category: 'Symposium 20 (KCHUGR)',
+        title: 'Big data and risk stratification for cancer prevention in upper GI',
+        subtitle: 'Translating big data into upper GI cancer prevention',
+        room: 'Vista Hall 3 (B2F)', aliases: '상부위장관 헬리코박터 빅데이터 위암예방 KCHUGR',
+        talks: ['Big data cohorts & individualized risk stratification in upper GI practice']
+      },
+      {
+        id: 'd3-s21', day: 3, start: '08:30', end: '10:00', tone: 'purple', track: 'ENDO',
+        category: 'Symposium 21 (KSGE)',
+        title: 'Colorectal ESD masterclass: Innovation and insight',
+        subtitle: 'Techniques, traction devices, and complication management',
+        room: 'Art Hall (B1F)', aliases: '소화기내시경 대장 ESD KSGE',
+        talks: ['Advanced colorectal ESD techniques & clinical insights']
+      },
+      {
+        id: 'd3-s22', day: 3, start: '08:30', end: '10:00', tone: 'orange', track: 'MOTILITY',
+        category: 'Symposium 22 (KSNM)',
+        title: 'Functional dyspepsia 2026: From mechanisms to precision therapy',
+        subtitle: 'Pathophysiology & tailored management of functional dyspepsia',
+        room: 'Walker Hall (B1F)', aliases: '소화기기능성질환 운동학회 기능성소화불량 KSNM FD',
+        talks: ['Mechanisms and precision pharmacotherapy for functional dyspepsia']
+      },
+
+      // DAY 3 — Late Morning (10:20 – 12:00)
+      {
+        id: 'd3-s23', day: 3, start: '10:20', end: '12:00', tone: 'blue', track: 'GI',
+        category: 'Symposium 23 (KSG)',
+        title: 'Young gastroenterologists 2026: Designing a sustainable career',
+        subtitle: 'Innovation, research leadership & career sustainability',
+        room: 'Grand Hall 1 (B1F)', aliases: '소화기학회 젊은소화기내과의사 커리어 KSG',
+        talks: ['Designing a sustainable and innovative career in gastroenterology']
+      },
+      {
+        id: 'd3-s24', day: 3, start: '10:20', end: '12:00', tone: 'green', track: 'LIVER',
+        category: 'Symposium 24 (KASL)',
+        title: 'Steatotic liver disease: Clinical paradigms & outcomes',
+        subtitle: 'MASLD/MetALD risk assessment & long-term outcomes',
+        room: 'Grand Hall 2 (B1F)', aliases: '간학회 지방간질환 KASL MASLD SLD',
+        talks: ['Updated clinical paradigms & therapeutic outcomes in steatotic liver disease']
+      },
+      {
+        id: 'd3-comb3', day: 3, start: '10:20', end: '12:00', tone: 'purple', track: 'ENDO',
+        category: 'Combined 03 (KASID + KSGE)',
+        title: 'Innovations & evidence-based strategies in colorectal cancer screening',
+        subtitle: 'Joint symposium of KASID & KSGE',
+        room: 'Grand Hall 3 (B1F)', aliases: '장연구학회 소화기내시경 대장암검진 KASID KSGE',
+        talks: ['Novel screening modalities & colonoscopy quality benchmarks']
+      },
+      {
+        id: 'd3-pg02', day: 3, start: '10:20', end: '12:00', tone: 'teal', track: 'GI',
+        category: 'PG Course 02 (KCHUGR)',
+        title: 'Update on upper GI benign neoplasm',
+        subtitle: 'Endoscopic diagnosis & management of upper GI benign tumors',
+        room: 'Vista Hall 1 (B2F)', aliases: '상부위장관 양성종양 연수강좌 KCHUGR',
+        talks: ['Practical diagnosis & surveillance of gastric and duodenal benign neoplasms']
+      },
+      {
+        id: 'd3-comb4', day: 3, start: '10:20', end: '12:00', tone: 'green', track: 'LIVER',
+        category: 'Combined 04 (KPBA + KSGC)',
+        title: 'Recent advancement for management of pancreatic NET and NEC',
+        subtitle: 'Joint symposium of KPBA & KSGC',
+        room: 'Vista Hall 2 (B2F)', aliases: '췌장담도학회 소화기암연구학회 췌장신경내분비종양 KPBA KSGC NET NEC',
+        talks: ['Multidisciplinary management of pancreatic neuroendocrine tumors & carcinomas']
+      },
+
+      // DAY 3 — Luncheon & Afternoon
+      {
+        id: 'd3-lunch', day: 3, start: '12:00', end: '13:10', tone: 'yellow', track: 'GI',
+        category: 'Luncheon Symposium',
+        title: 'Luncheon Symposium (Day 3)',
+        subtitle: 'Sponsored lunch & clinical update symposium',
+        room: 'Grand Hall 1–3 (B1F)', aliases: '런천 심포지엄 점심',
+        talks: ['Sponsored Luncheon Symposia across Grand Hall 1–3']
+      },
+      {
+        id: 'd3-aft1', day: 3, start: '13:20', end: '14:50', tone: 'blue', track: 'GI',
+        category: 'Afternoon Symposium',
+        title: 'KDDW 2026 Afternoon Free Papers & Special Symposia',
+        subtitle: 'Oral presentations & multidisciplinary case discussions',
+        room: 'Grand Hall 1–3 (B1F)', aliases: '오후 심포지엄 자유연제 구연발표',
+        talks: ['Selected Free Paper Oral Presentations', 'Afternoon Special Symposia']
+      },
+      {
+        id: 'd3-usg', day: 3, start: '13:20', end: '15:30', tone: 'purple', track: 'ENDO',
+        category: 'Abdominal USG',
+        title: 'Abdominal Ultrasonography Hands-on & Case Program',
+        subtitle: 'Practical liver, biliary & pancreatic ultrasound tips',
+        room: 'Vista Hall 1 (B2F)', aliases: '복부초음파 초음파 핸즈온 USG',
+        talks: ['Case-based abdominal ultrasonography & live demonstration']
+      },
+      {
+        id: 'd3-close', day: 3, start: '15:40', end: '16:40', tone: 'pink', track: 'GI',
+        category: 'Awards & Closing',
+        title: 'KDDW 2026 Award Ceremony & Closing Remarks',
+        subtitle: 'Best Presentation Awards, YIA & Farewell',
+        room: 'Grand Hall 1 (B1F)', aliases: '시상식 폐회식',
+        talks: ['Award Ceremony & Closing Remarks of KDDW 2026']
+      }
+    ];
+
+    function toMin(hhmm) {
+      const [h, m] = hhmm.split(':').map(Number);
+      return h * 60 + m;
+    }
+
+    // --- Real-Time KST Schedule Detection ---
+    const DAY_DATES = { 1: '2026-11-19', 2: '2026-11-20', 3: '2026-11-21' };
+
+    function getCurrentKstParts() {
+      const now = new Date();
+      try {
+        const parts = new Intl.DateTimeFormat('en-CA', {
+          timeZone: 'Asia/Seoul',
+          year: 'numeric', month: '2-digit', day: '2-digit',
+          hour: '2-digit', minute: '2-digit', hour12: false
+        }).formatToParts(now);
+        const map = {};
+        parts.forEach((p) => { map[p.type] = p.value; });
+        const h = Number(map.hour === '24' ? '0' : map.hour);
+        const m = Number(map.minute);
+        return {
+          dateStr: `${map.year}-${map.month}-${map.day}`,
+          hhmm: `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`,
+          mins: h * 60 + m
+        };
+      } catch (_) {
+        const y = now.getFullYear(), mo = String(now.getMonth() + 1).padStart(2, '0'), d = String(now.getDate()).padStart(2, '0');
+        const h = now.getHours(), m = now.getMinutes();
+        return { dateStr: `${y}-${mo}-${d}`, hhmm: `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`, mins: h * 60 + m };
+      }
+    }
+
+    function getLiveState() {
+      const kst = getCurrentKstParts();
+      const activeDay = Number(Object.keys(DAY_DATES).find((k) => DAY_DATES[k] === kst.dateStr)) || 0;
+
+      if (activeDay > 0) {
+        const todaySessions = SESSIONS.filter((s) => s.day === activeDay).sort((a, b) => toMin(a.start) - toMin(b.start));
+        const liveNow = todaySessions.filter((s) => kst.mins >= toMin(s.start) && kst.mins < toMin(s.end));
+        if (liveNow.length > 0) return { status: 'LIVE', day: activeDay, kst, items: liveNow };
+        const upNext = todaySessions.filter((s) => toMin(s.start) > kst.mins);
+        if (upNext.length > 0) {
+          const nextStart = upNext[0].start;
+          return { status: 'UP_NEXT', day: activeDay, kst, items: upNext.filter((s) => s.start === nextStart), diffMin: toMin(nextStart) - kst.mins };
+        }
+        if (activeDay < 3) {
+          const tomorrowFirst = SESSIONS.filter((s) => s.day === activeDay + 1).sort((a, b) => toMin(a.start) - toMin(b.start))[0];
+          return { status: 'UP_NEXT', day: activeDay + 1, kst, items: tomorrowFirst ? [tomorrowFirst] : [], diffMin: null };
+        }
+        return { status: 'AFTER', day: 3, kst, items: [] };
+      }
+
+      if (kst.dateStr < DAY_DATES[1]) {
+        const d1 = new Date(DAY_DATES[1] + 'T00:00:00+09:00');
+        const dn = new Date(kst.dateStr + 'T00:00:00+09:00');
+        const dday = Math.max(1, Math.round((d1 - dn) / 86400000));
+        return { status: 'BEFORE', day: 1, kst, dday, items: [SESSIONS[0]] };
+      }
+      return { status: 'AFTER', day: 3, kst, items: [] };
+    }
+
+    function renderLiveWidget() {
+      const t = T[lang];
+      const st = getLiveState();
+
+      if (st.status === 'LIVE') {
+        return `
+          <section class="live-card">
+            <div class="live-header">
+              <span class="live-pill"><span class="live-dot"></span> ${t.liveNow} (${st.items.length})</span>
+              <span class="live-clock">${t.days[st.day].date} ${st.kst.hhmm} KST</span>
+            </div>
+            ${st.items.map((s) => {
+              const total = Math.max(1, toMin(s.end) - toMin(s.start));
+              const pct = Math.min(100, Math.max(5, Math.round(((st.kst.mins - toMin(s.start)) / total) * 100)));
+              return `
+                <div class="live-item" onclick="openDetail('${s.id}')">
+                  <div class="live-item-title">${s.title}</div>
+                  <div class="live-item-meta">
+                    <span>🕒 ${s.start}–${s.end} · ${s.category}</span>
+                    <span>📍 ${s.room}</span>
+                  </div>
+                  <div class="live-progress"><div class="live-progress-bar" style="width:${pct}%;"></div></div>
+                </div>
+              `;
+            }).join('')}
+          </section>
+        `;
+      }
+
+      if (st.status === 'UP_NEXT' && st.items.length) {
+        return `
+          <section class="live-card upcoming">
+            <div class="live-header">
+              <span class="live-pill next">⏳ ${t.upNext}${st.diffMin ? ` · ${st.diffMin}${t.startsInMin}` : ''}</span>
+              <span class="live-clock">${st.kst.hhmm} KST</span>
+            </div>
+            ${st.items.map((s) => `
+              <div class="live-item next-item" onclick="openDetail('${s.id}')">
+                <div class="live-item-title">${s.title}</div>
+                <div class="live-item-meta">
+                  <span>🕒 ${t.days[s.day].date} ${s.start}–${s.end}</span>
+                  <span>📍 ${s.room}</span>
+                </div>
+              </div>
+            `).join('')}
+          </section>
+        `;
+      }
+
+      if (st.status === 'BEFORE') {
+        const first = st.items[0];
+        return `
+          <section class="live-card upcoming">
+            <div class="live-header">
+              <span class="live-pill dday">D-${st.dday} · ${t.beforeEvent}</span>
+              <span class="live-clock">${st.kst.hhmm} KST</span>
+            </div>
+            <div class="live-item next-item" onclick="openDetail('${first.id}')">
+              <div class="live-item-title">${first.title}</div>
+              <div class="live-item-meta">
+                <span>🕒 ${t.days[first.day].date} ${first.start}–${first.end}</span>
+                <span>📍 ${first.room}</span>
+              </div>
+            </div>
+          </section>
+        `;
+      }
+
+      return `
+        <section class="live-card upcoming">
+          <div class="live-header">
+            <span class="live-pill dday">✓ ${t.afterEvent}</span>
+            <span class="live-clock">${st.kst.dateStr} ${st.kst.hhmm}</span>
+          </div>
+          <div style="font-size:12.5px;color:#455A64;line-height:1.45;">${t.afterEventMsg}</div>
+        </section>
+      `;
+    }
+
+    (function initDayByClock() {
+      const st = getLiveState();
+      if (st.status === 'LIVE' || st.status === 'UP_NEXT') {
+        selectedDay = st.day;
+        mySelectedDay = st.day;
+      }
+    })();
+
+    function hasConflict(item, dayItems) {
+      const s1 = toMin(item.start), e1 = toMin(item.end);
+      return dayItems.some((o) => o.id !== item.id && s1 < toMin(o.end) && toMin(o.start) < e1);
+    }
+
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => el.classList.remove('show'), 1800);
+    }
+
+    function toggleLang() {
+      lang = lang === 'ko' ? 'en' : 'ko';
+      try { localStorage.setItem(STORAGE_KEY_LANG, lang); } catch (_) {}
+      render();
+      updateInstallBanner();
+    }
+
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll('.nav-btn').forEach((b) => b.classList.remove('active'));
+      const navBtn = document.getElementById('nav-' + tab);
+      if (navBtn) navBtn.classList.add('active');
+      window.scrollTo(0, 0);
+      render();
+    }
+
+    function toggleSave(id, ev) {
+      if (ev) ev.stopPropagation();
+      const t = T[lang];
+      if (savedIds.has(id)) {
+        savedIds.delete(id);
+        showToast(t.toastRemoved);
+      } else {
+        savedIds.add(id);
+        showToast(t.toastAdded);
+      }
+      persistSaved();
+      render();
+    }
+
+    function openDetail(id) {
+      const s = SESSIONS.find((x) => x.id === id);
+      if (!s) return;
+      const t = T[lang];
+      const isSaved = savedIds.has(s.id);
+      document.getElementById('detailContent').innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div class="badges"><span class="cat-badge">${s.category}</span></div>
+          <button onclick="closeDetail()" style="border:none;background:#F1F5F9;color:#475569;border-radius:999px;width:28px;height:28px;font-weight:700;cursor:pointer;">✕</button>
+        </div>
+        <h2 style="font-size:17px;font-weight:800;color:#0F3D6E;margin:10px 0 4px;line-height:1.35;">${s.title}</h2>
+        <p style="font-size:13px;color:#546E7A;margin:0;line-height:1.4;">${s.subtitle}</p>
+        <table class="detail-table">
+          <tr><th>${t.thTime}</th><td><b>${t.days[s.day].date}</b> · ${s.start} – ${s.end}</td></tr>
+          <tr><th>${t.thRoom}</th><td>📍 ${s.room}</td></tr>
+          <tr><th>${t.thTrack}</th><td>${s.category}</td></tr>
+          <tr>
+            <th>${t.thTalks}</th>
+            <td><ul class="talk-list">${s.talks.map((tk) => `<li>${tk}</li>`).join('')}</ul></td>
+          </tr>
+        </table>
+        <button class="sheet-cta ${isSaved ? 'remove' : 'add'}" onclick="toggleSave('${s.id}'); openDetail('${s.id}');">
+          ${isSaved ? t.removeFromMy : t.addToMy}
+        </button>
+      `;
+      document.getElementById('detailBackdrop').classList.add('open');
+    }
+
+    function closeDetail(ev) {
+      if (ev && ev.target !== document.getElementById('detailBackdrop')) return;
+      document.getElementById('detailBackdrop').classList.remove('open');
+    }
+
+    function setSearch(val) {
+      searchQuery = val;
+      const clr = document.getElementById('searchClearBtn');
+      if (clr) clr.classList.toggle('visible', !!val);
+      renderBodyOnly();
+    }
+
+    function clearSearch() {
+      searchQuery = '';
+      const inp = document.getElementById('programSearchInput');
+      if (inp) inp.value = '';
+      const clr = document.getElementById('searchClearBtn');
+      if (clr) clr.classList.remove('visible');
+      renderBodyOnly();
+    }
+
+    function copyAddress() {
+      const addr = T[lang].venueAddr;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(addr).then(() => showToast(T[lang].toastCopied));
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = addr;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        showToast(T[lang].toastCopied);
+      }
+    }
+
+    function renderDayTabsHTML(activeDay, handlerName, showCounts) {
+      const t = T[lang];
+      return `
+        <div class="day-tabs">
+          ${[1, 2, 3].map((d) => {
+            const cnt = SESSIONS.filter((s) => s.day === d && savedIds.has(s.id)).length;
+            return `
+              <button class="day-tab ${d === activeDay ? 'active' : ''}" onclick="${handlerName}(${d})">
+                <div class="day-tab-main">${t.days[d].short}${showCounts ? ` (${cnt})` : ''}</div>
+                <div class="day-tab-sub">${t.days[d].date}</div>
+              </button>
+            `;
+          }).join('')}
+        </div>
+      `;
+    }
+
+    function setProgramDay(d) { selectedDay = d; render(); }
+    function setMyDay(d) { mySelectedDay = d; render(); }
+    function setTrackFilter(tr) { trackFilter = tr; render(); }
+
+    function renderBodyOnly() {
+      const t = T[lang];
+      const main = document.getElementById('mainContent');
+
+      // HOME SCREEN
+      if (currentTab === 'home') {
+        main.innerHTML = `
+          <div class="home-wrap">
+            <section class="home-hero">
+              <div class="home-hero-kicker">KDDW 2026 · 10th Annual Congress</div>
+              <div class="home-hero-theme">Korea Digestive Disease Week<br/>2026</div>
+              <div class="home-hero-meta">${t.homeMeta}</div>
+            </section>
+
+            ${renderLiveWidget()}
+
+            <section class="home-menu-grid">
+              <button class="home-tile tile-program" onclick="switchTab('program')">
+                <div class="home-tile-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="3"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                    <line x1="8" y1="14" x2="16" y2="14"></line>
+                    <line x1="8" y1="18" x2="13" y2="18"></line>
+                  </svg>
+                </div>
+                <div class="home-tile-label">${t.tileProgram}</div>
+              </button>
+
+              <button class="home-tile tile-my" onclick="switchTab('my')">
+                ${savedIds.size > 0 ? `<span class="home-tile-badge">${savedIds.size}</span>` : ''}
+                <div class="home-tile-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2.5l2.92 5.92 6.53.95-4.72 4.6 1.11 6.5L12 17.4l-5.84 3.07 1.11-6.5-4.72-4.6 6.53-.95L12 2.5z"/>
+                  </svg>
+                </div>
+                <div class="home-tile-label">${t.tileMy}</div>
+              </button>
+
+              <button class="home-tile tile-info" onclick="switchTab('venue')">
+                <div class="home-tile-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                </div>
+                <div class="home-tile-label">${t.tileInfo}</div>
+              </button>
+            </section>
+          </div>
+        `;
+        return;
+      }
+
+      if (currentTab === 'program') {
+        const q = searchQuery.trim().toLowerCase();
+        const isSearching = q.length > 0;
+        const list = SESSIONS.filter((s) => {
+          if (!isSearching && s.day !== selectedDay) return false;
+          if (trackFilter !== 'ALL' && s.track !== trackFilter) return false;
+          if (isSearching) {
+            const hay = (s.title + ' ' + s.subtitle + ' ' + s.category + ' ' + (s.aliases || '') + ' ' + s.talks.join(' ')).toLowerCase();
+            if (!hay.includes(q)) return false;
+          }
+          return true;
+        });
+
+        const liveState = getLiveState();
+        const liveIdSet = new Set(liveState.status === 'LIVE' ? liveState.items.map((x) => x.id) : []);
+
+        const searchBanner = isSearching ? `
+          <div style="font-size:12px;font-weight:700;color:#0F3D6E;background:#ECF4FC;border:1px solid #C8E0F4;border-radius:10px;padding:7px 12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;">
+            <span>🔍 ${t.searchAllDaysHint}: <b>${list.length}</b></span>
+            <button onclick="clearSearch()" style="border:none;background:transparent;color:#1B6BB5;font-weight:800;font-size:12px;cursor:pointer;">✕</button>
+          </div>
+        ` : '';
+
+        main.innerHTML = searchBanner + (list.length ? `
+          <div class="session-list">
+            ${list.map((s) => {
+              const isSaved = savedIds.has(s.id);
+              const isLive = liveIdSet.has(s.id);
+              return `
+                <article class="session-card tone-${s.tone} ${isSaved ? 'saved' : ''} ${isLive ? 'is-live' : ''}" onclick="openDetail('${s.id}')">
+                  <div class="card-top">
+                    <div class="badges">
+                      ${isLive ? `<span class="live-inline-badge"><span class="live-dot"></span> ${t.liveNow}</span>` : ''}
+                      ${isSearching ? `<span class="cat-badge" style="background:#0F3D6E;color:#FFF;border:none;">${t.days[s.day].date}</span>` : ''}
+                      <span class="time-badge">${s.start}–${s.end}</span>
+                      <span class="cat-badge">${s.category}</span>
+                    </div>
+                    <button class="star-btn ${isSaved ? 'saved' : ''}" onclick="toggleSave('${s.id}', event)" aria-label="Bookmark">
+                      ${isSaved ? '★' : '☆'}
+                    </button>
+                  </div>
+                  <div class="card-title">${s.title}</div>
+                  <div class="card-sub">${s.subtitle}</div>
+                  <div class="card-footer">
+                    <span>📍 ${s.room}</span>
+                    <span class="card-more">${t.details}</span>
+                  </div>
+                </article>
+              `;
+            }).join('')}
+          </div>
+        ` : `<div class="empty-state"><div class="empty-icon">🔍</div><div class="empty-text">${t.noSearch}</div></div>`);
+        return;
+      }
+
+      if (currentTab === 'my') {
+        const dayItems = SESSIONS
+          .filter((s) => s.day === mySelectedDay && savedIds.has(s.id))
+          .sort((a, b) => toMin(a.start) - toMin(b.start));
+
+        if (!dayItems.length) {
+          main.innerHTML = `
+            <div class="empty-state">
+              <div class="empty-icon">☆</div>
+              <div class="empty-text">${t.emptyMy}</div>
+              <button class="primary-btn" onclick="selectedDay=${mySelectedDay}; switchTab('program');">${t.goProgram}</button>
+            </div>
+          `;
+          return;
+        }
+
+        main.innerHTML = `
+          <div class="timeline">
+            ${dayItems.map((s) => {
+              const conflict = hasConflict(s, dayItems);
+              return `
+                <div class="timeline-item">
+                  <div class="timeline-dot ${conflict ? 'conflict' : ''}"></div>
+                  <article class="session-card tone-${s.tone}" onclick="openDetail('${s.id}')">
+                    <div class="card-top">
+                      <div class="badges">
+                        <span class="time-badge">${s.start} – ${s.end}</span>
+                        <span class="cat-badge">${s.category}</span>
+                        ${conflict ? `<span class="conflict-badge">⚠ ${t.conflict}</span>` : ''}
+                      </div>
+                      <button class="star-btn saved" onclick="toggleSave('${s.id}', event)" aria-label="Remove">★</button>
+                    </div>
+                    <div class="card-title">${s.title}</div>
+                    <div class="card-footer">
+                      <span>📍 ${s.room}</span>
+                      <span class="card-more">${t.details}</span>
+                    </div>
+                  </article>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+        return;
+      }
+
+      // INFO TAB
+      main.innerHTML = `
+        <section class="venue-card">
+          <div class="venue-body">
+            <div class="venue-kicker">${t.venueKicker}</div>
+            <div class="venue-name">${t.venueName}</div>
+            <div class="venue-addr">${t.venueAddr}</div>
+            <div class="btn-grid">
+              <a class="action-btn action-primary" target="_blank" rel="noopener"
+                 href="https://maps.google.com/?q=Grand+Walkerhill+Seoul">🗺 ${t.openGoogleMap}</a>
+              <button class="action-btn action-soft" onclick="copyAddress()">📋 ${t.copyAddr}</button>
+              <a class="action-btn action-outline" target="_blank" rel="noopener"
+                 href="https://map.naver.com/p/search/%EA%B7%B8%EB%9E%9C%EB%93%9C%20%EC%9B%8C%EC%BB%A4%ED%9E%90%20%EC%84%9C%EC%9A%B8">🟢 ${t.openNaverMap}</a>
+              <a class="action-btn action-outline" target="_blank" rel="noopener"
+                 href="https://map.kakao.com/?q=%EA%B7%B8%EB%9E%9C%EB%93%9C%20%EC%9B%8C%EC%BB%A4%ED%9E%90%20%EC%84%9C%EC%9A%B8">🟡 ${t.openKakaoMap}</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="venue-card">
+          <div class="venue-body">
+            <div class="section-heading">🚌 ${t.shuttleTitle}</div>
+            <div class="hall-box">
+              <div class="hall-desc">${t.shuttleDesc}</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="venue-card">
+          <div class="venue-body">
+            <div class="section-heading">🏛 ${t.societiesTitle}</div>
+            <div class="hall-box">
+              <div class="hall-desc">${t.societiesList}</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="venue-card">
+          <div class="venue-body">
+            <div class="section-heading">🌐 ${t.officialTitle}</div>
+            <a class="action-btn action-primary" style="width:100%;" target="_blank" rel="noopener" href="https://www.kddw.org">${t.openWeb}</a>
+          </div>
+        </section>
+      `;
+    }
+
+    function render() {
+      const t = T[lang];
+      document.documentElement.lang = lang;
+      document.getElementById('langToggleBtn').textContent = lang === 'ko' ? 'EN' : '한국어';
+      document.getElementById('savedCountBadge').textContent = savedIds.size;
+
+      document.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.getAttribute('data-i18n');
+        if (t[key]) el.textContent = t[key];
+      });
+
+      const subHeader = document.getElementById('subHeader');
+      const dayTabsEl = document.getElementById('dayTabsContainer');
+      const filterEl = document.getElementById('filterContainer');
+
+      if (currentTab === 'home') {
+        subHeader.classList.add('hidden');
+        subHeader.innerHTML = '';
+        dayTabsEl.innerHTML = '';
+        filterEl.innerHTML = '';
+      } else if (currentTab === 'program') {
+        subHeader.classList.remove('hidden');
+        subHeader.innerHTML = `
+          <div class="page-title">${t.programTitle}</div>
+          <div class="page-subtitle">${t.programSub}</div>
+          <div class="search-box">
+            <input id="programSearchInput" class="search-input" type="search"
+              placeholder="${t.searchPlaceholder}" value="${searchQuery.replace(/"/g, '&quot;')}"
+              oninput="setSearch(this.value)" />
+            <button id="searchClearBtn" class="search-clear ${searchQuery ? 'visible' : ''}" onclick="clearSearch()">✕</button>
+          </div>
+        `;
+        dayTabsEl.innerHTML = renderDayTabsHTML(selectedDay, 'setProgramDay', false);
+        filterEl.innerHTML = `
+          <div class="chip-row">
+            <button class="chip ${trackFilter === 'ALL' ? 'active' : ''}" onclick="setTrackFilter('ALL')">${t.allTracks}</button>
+            <button class="chip ${trackFilter === 'GI' ? 'active' : ''}" onclick="setTrackFilter('GI')">${t.trackGI}</button>
+            <button class="chip ${trackFilter === 'LIVER' ? 'active' : ''}" onclick="setTrackFilter('LIVER')">${t.trackLiver}</button>
+            <button class="chip ${trackFilter === 'ENDO' ? 'active' : ''}" onclick="setTrackFilter('ENDO')">${t.trackEndo}</button>
+            <button class="chip ${trackFilter === 'MOTILITY' ? 'active' : ''}" onclick="setTrackFilter('MOTILITY')">${t.trackMotility}</button>
+          </div>
+        `;
+      } else if (currentTab === 'my') {
+        subHeader.classList.remove('hidden');
+        subHeader.innerHTML = `
+          <div class="page-title">${t.myTitle}</div>
+          <div class="page-subtitle">${t.mySub}</div>
+          <div class="summary-grid">
+            ${[1, 2, 3].map((d) => {
+              const cnt = SESSIONS.filter((s) => s.day === d && savedIds.has(s.id)).length;
+              return `
+                <div class="summary-pill ${mySelectedDay === d ? 'active' : ''}" onclick="setMyDay(${d})">
+                  <div class="summary-pill-day">${t.days[d].short}</div>
+                  <div class="summary-pill-num">${cnt}${t.savedUnit}</div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+        dayTabsEl.innerHTML = renderDayTabsHTML(mySelectedDay, 'setMyDay', true);
+        filterEl.innerHTML = '';
+      } else {
+        subHeader.classList.remove('hidden');
+        subHeader.innerHTML = `
+          <div class="page-title">${t.venueTitle}</div>
+          <div class="page-subtitle">${t.venueSub}</div>
+        `;
+        dayTabsEl.innerHTML = '';
+        filterEl.innerHTML = '';
+      }
+
+      renderBodyOnly();
+    }
+
+    // --- PWA Install & Service Worker ---
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    let installDismissed = false;
+
+    function updateInstallBanner() {
+      const banner = document.getElementById('installBanner');
+      const msg = document.getElementById('installMsg');
+      const btn = document.getElementById('installActionBtn');
+      if (isStandalone || installDismissed) {
+        banner.classList.remove('show');
+        return;
+      }
+      if (deferredPrompt) {
+        msg.textContent = T[lang].androidInstall;
+        btn.textContent = T[lang].installBtn;
+        btn.style.display = 'inline-block';
+        banner.classList.add('show');
+      } else if (isIOS) {
+        msg.textContent = T[lang].iosInstall;
+        btn.style.display = 'none';
+        banner.classList.add('show');
+      }
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      updateInstallBanner();
+    });
+
+    function triggerInstall() {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.finally(() => {
+        deferredPrompt = null;
+        updateInstallBanner();
+      });
+    }
+
+    function dismissInstall() {
+      installDismissed = true;
+      updateInstallBanner();
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    render();
+    updateInstallBanner();
+    setInterval(() => {
+      if (currentTab === 'home' || currentTab === 'program') renderBodyOnly();
+    }, 60000);
+  </script>
+</body>
+</html>
