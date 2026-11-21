@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kddw2026-v1';
+const CACHE_NAME = 'kddw2026-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -26,11 +26,12 @@ self.addEventListener('activate', (event) => {
   self.clients.claim();
 });
 
-// Network-first so iPhone & Android always receive updates automatically
+// Bypass GitHub Pages 10-min max-age=600 cache for instant updates, with offline fallback
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  const isDoc = event.request.mode === 'navigate' || event.request.url.endsWith('.html') || event.request.url.endsWith('/');
   event.respondWith(
-    fetch(event.request)
+    fetch(event.request, isDoc ? { cache: 'no-cache' } : undefined)
       .then((res) => {
         if (res && res.status === 200 && res.type === 'basic') {
           const clone = res.clone();
