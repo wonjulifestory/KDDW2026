@@ -1094,26 +1094,45 @@
       return '<div class="room-board">' + rows.map((r) => r.html).join('') + '</div>';
     }
 
-        function renderLiveWidget() {
+            function renderLiveWidget() {
       const t = T[lang];
       const isKo = lang === 'ko';
       const kst = getCurrentKstParts();
       const activeDay = Number(Object.keys(DAY_DATES).find((k) => DAY_DATES[k] === kst.dateStr)) || 0;
 
-      // Show room-by-room live status ONLY during actual congress dates; keep empty before/after
-      if (activeDay === 0) return '';
+      if (activeDay > 0) {
+        const liveCnt = SESSIONS.filter((s) => s.day === activeDay && kst.mins >= toMin(s.start) && kst.mins < toMin(s.end)).length;
+        const pillHtml = liveCnt > 0
+          ? '<span class="live-pill"><span class="live-dot"></span> ' + (isKo ? '방별 실시간 현황' : 'Live by Room') + '</span>'
+          : '<span class="live-pill next">📍 ' + (isKo ? '방별 진행 현황' : 'Room Status') + '</span>';
 
-      const liveCnt = SESSIONS.filter((s) => s.day === activeDay && kst.mins >= toMin(s.start) && kst.mins < toMin(s.end)).length;
-      const pillHtml = liveCnt > 0
-        ? '<span class="live-pill"><span class="live-dot"></span> ' + (isKo ? '방별 실시간 현황' : 'Live by Room') + '</span>'
-        : '<span class="live-pill next">📍 ' + (isKo ? '방별 진행 현황' : 'Room Status') + '</span>';
+        return '<section class="live-card ' + (liveCnt > 0 ? '' : 'upcoming') + '">' +
+          '<div class="live-header">' +
+            pillHtml +
+            '<span class="live-clock">' + t.days[activeDay].date + ' ' + kst.hhmm + '</span>' +
+          '</div>' +
+          renderRoomBoardForDay(activeDay, kst, isKo) +
+        '</section>';
+      }
 
-      return '<section class="live-card ' + (liveCnt > 0 ? '' : 'upcoming') + '">' +
+      // Before/after conference: keep the Room-by-Room box with clean empty room slots
+      const allRooms = [...new Set(SESSIONS.map((s) => s.room))].filter((r) => !/Foyer/i.test(r)).slice(0, 4);
+      const emptySlots = allRooms.map((room) =>
+        '<div class="room-row" style="cursor:default;background:#FFFFFF;border:1px dashed #CBD5E1;min-height:54px;">' +
+          '<div class="room-row-top">' +
+            '<span class="room-name">📍 ' + room + '</span>' +
+            '<span class="room-status done">—</span>' +
+          '</div>' +
+          '<div style="height:14px;"></div>' +
+        '</div>'
+      ).join('');
+
+      return '<section class="live-card upcoming">' +
         '<div class="live-header">' +
-          pillHtml +
-          '<span class="live-clock">' + t.days[activeDay].date + ' ' + kst.hhmm + '</span>' +
+          '<span class="live-pill dday">📍 ' + (isKo ? '방별 실시간 현황' : 'Live by Room') + '</span>' +
+          '<span class="live-clock">' + (isKo ? '진행 예정' : 'Standby') + '</span>' +
         '</div>' +
-        renderRoomBoardForDay(activeDay, kst, isKo) +
+        '<div class="room-board">' + emptySlots + '</div>' +
       '</section>';
     }
 
@@ -1641,6 +1660,7 @@
   </script>
 </body>
 </html>
+
 
 
 
