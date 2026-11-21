@@ -1094,47 +1094,26 @@
       return '<div class="room-board">' + rows.map((r) => r.html).join('') + '</div>';
     }
 
-    function renderLiveWidget() {
+        function renderLiveWidget() {
       const t = T[lang];
       const isKo = lang === 'ko';
-      const kst = getEffectiveKst();
+      const kst = getCurrentKstParts();
       const activeDay = Number(Object.keys(DAY_DATES).find((k) => DAY_DATES[k] === kst.dateStr)) || 0;
-      const simLabel = roomSimMode
-        ? (isKo ? '✕ 현재시간' : '✕ Live Time')
-        : (isKo ? '▶ 방별 미리보기' : '▶ Room Preview');
-      const simBtn = '<button class="sim-btn" style="border:1px solid #CBD5E1;background:#F8FAFC;color:#0F172A;font-size:11px;font-weight:700;padding:4px 9px;border-radius:999px;cursor:pointer;" onclick="toggleRoomSim()">' + simLabel + '</button>';
 
-      if (activeDay > 0) {
-        const liveCnt = SESSIONS.filter((s) => s.day === activeDay && kst.mins >= toMin(s.start) && kst.mins < toMin(s.end)).length;
-        const pillHtml = liveCnt > 0
-          ? '<span class="live-pill"><span class="live-dot"></span> ' + (isKo ? '방별 실시간 현황' : 'Live by Room') + (roomSimMode ? (isKo ? ' · 미리보기' : ' · Demo') : '') + '</span>'
-          : '<span class="live-pill next">📍 ' + (isKo ? '방별 진행 현황' : 'Room Status') + '</span>';
-        return '<section class="live-card ' + (liveCnt > 0 ? '' : 'upcoming') + '">' +
-          '<div class="live-header">' +
-            pillHtml +
-            '<div style="display:flex;align-items:center;gap:6px;"><span class="live-clock">' + t.days[activeDay].date + ' ' + kst.hhmm + '</span>' + simBtn + '</div>' +
-          '</div>' +
-          renderRoomBoardForDay(activeDay, kst, isKo) +
-        '</section>';
-      }
+      // Show room-by-room live status ONLY during actual congress dates; keep empty before/after
+      if (activeDay === 0) return '';
 
-      // Before or after conference: show D-day + Day 1 room overview + preview button
-      const d1 = new Date(DAY_DATES[1] + 'T00:00:00+09:00');
-      const dn = new Date(kst.dateStr + 'T00:00:00+09:00');
-      const isBefore = kst.dateStr < DAY_DATES[1];
-      const dday = Math.max(1, Math.round((d1 - dn) / 86400000));
-      const badgeText = isBefore
-        ? ('D-' + dday + ' · ' + (isKo ? '방별 첫날 일정' : 'Day 1 Rooms'))
-        : ('✓ ' + (isKo ? '학회 종료' : 'Concluded'));
+      const liveCnt = SESSIONS.filter((s) => s.day === activeDay && kst.mins >= toMin(s.start) && kst.mins < toMin(s.end)).length;
+      const pillHtml = liveCnt > 0
+        ? '<span class="live-pill"><span class="live-dot"></span> ' + (isKo ? '방별 실시간 현황' : 'Live by Room') + '</span>'
+        : '<span class="live-pill next">📍 ' + (isKo ? '방별 진행 현황' : 'Room Status') + '</span>';
 
-      return '<section class="live-card upcoming">' +
+      return '<section class="live-card ' + (liveCnt > 0 ? '' : 'upcoming') + '">' +
         '<div class="live-header">' +
-          '<span class="live-pill dday">' + badgeText + '</span>' +
-          simBtn +
+          pillHtml +
+          '<span class="live-clock">' + t.days[activeDay].date + ' ' + kst.hhmm + '</span>' +
         '</div>' +
-        (isBefore
-          ? renderRoomBoardForDay(1, { dateStr: DAY_DATES[1], hhmm: '08:00', mins: 480 }, isKo)
-          : '<div style="font-size:12.5px;color:#455A64;line-height:1.45;">' + t.afterEventMsg + '</div>') +
+        renderRoomBoardForDay(activeDay, kst, isKo) +
       '</section>';
     }
 
@@ -1662,6 +1641,7 @@
   </script>
 </body>
 </html>
+
 
 
 
