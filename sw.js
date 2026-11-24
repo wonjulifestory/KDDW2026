@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kddw2026-v9';
+const CACHE_NAME = 'kddw2026-v10';
 const ASSETS = [
   './',
   './index.html',

@@ -97,13 +97,18 @@
     }
 
     .brand-date-pill {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--kddw-navy);
-      background: var(--kddw-soft);
-      padding: 3px 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      font-weight: 900;
+      color: #FFFFFF;
+      background: linear-gradient(135deg, #0F3D6E 0%, #1B6BB5 100%);
+      padding: 4px 10px;
       border-radius: 999px;
       white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      box-shadow: 0 2px 8px rgba(15, 61, 110, 0.25);
     }
 
     .lang-btn {
@@ -546,17 +551,33 @@
       display: flex;
       justify-content: space-between;
     }
-    /* One-Screen Zero-Scroll Home Layout */
+    /* One-Screen Zero-Scroll Home Layout (IPBM2027 Official Mobile Page Skeleton) */
+    body.home-locked {
+      overflow: hidden !important;
+      overscroll-behavior: none !important;
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
     .app-shell.is-home {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
       height: 100vh;
       height: 100dvh;
-      overflow: hidden;
+      overflow: hidden !important;
+      overscroll-behavior: none !important;
+      touch-action: none;
+      background-color: #FFFFFF;
     }
     .app-shell.is-home .main-content {
       flex: 1;
       min-height: 0;
-      overflow: hidden;
-      padding: 10px 12px calc(68px + env(safe-area-inset-bottom)) !important;
+      overflow: hidden !important;
+      padding: 0 12px calc(70px + env(safe-area-inset-bottom)) !important;
       display: flex;
       flex-direction: column;
     }
@@ -565,95 +586,210 @@
       min-height: 0;
       display: flex;
       flex-direction: column;
-      gap: 9px !important;
+      justify-content: flex-start;
+      gap: 6px !important;
       padding-top: 0 !important;
     }
     .app-shell.is-home .home-visual-card {
-      flex: 1 1 0;
-      min-height: 120px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: #FFFFFF;
-      border-radius: 16px;
+      flex: 0 0 auto;
+      width: calc(100% + 24px);
+      margin: 0 -12px;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      box-shadow: none;
+      overflow: hidden;
     }
     .app-shell.is-home .home-visual-img {
       width: 100%;
-      height: 100%;
+      height: auto;
+      max-height: 44dvh;
       object-fit: contain;
+      object-position: top center;
+      display: block;
     }
     .app-shell.is-home .home-menu-grid {
       flex-shrink: 0;
-      gap: 8px !important;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px !important;
+      margin-top: 24px;
     }
     .app-shell.is-home .home-tile {
-      padding: 11px 6px 10px !important;
-      gap: 6px !important;
-      border-radius: 16px !important;
-    }
-    .app-shell.is-home .home-tile-icon {
-      width: 44px !important;
-      height: 44px !important;
-      border-radius: 13px !important;
-    }
-    .app-shell.is-home .home-tile-icon svg {
-      width: 22px;
-      height: 22px;
+      min-height: 98px;
+      padding: 13px 14px 11px !important;
+      border-radius: 18px !important;
+      border: none !important;
+      background: linear-gradient(155deg, #0F3D6E 0%, #1B6BB5 55%, #2E9BDA 100%) !important;
+      box-shadow: 0 8px 18px rgba(27, 107, 181, 0.24) !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: flex-start !important;
+      justify-content: space-between !important;
+      position: relative;
     }
     .app-shell.is-home .home-tile-label {
-      font-size: 13px !important;
+      font-size: 15px !important;
+      font-weight: 800 !important;
+      color: #FFFFFF !important;
+      text-align: left !important;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .app-shell.is-home .home-tile-icon {
+      width: 42px !important;
+      height: 42px !important;
+      border-radius: 12px !important;
+      background: rgba(255, 255, 255, 0.16) !important;
+      color: #FFFFFF !important;
+      box-shadow: none !important;
+      align-self: flex-end !important;
+    }
+    .app-shell.is-home .home-tile-icon svg {
+      width: 24px;
+      height: 24px;
     }
     .app-shell.is-home .home-install-cta {
       display: none !important;
     }
-    .app-shell.is-home .live-card {
+    .app-shell.is-home .home-footer {
       flex-shrink: 0;
-      padding: 9px 11px !important;
-      border-radius: 16px !important;
+      margin-top: auto;
+      padding: 0 0 4px !important;
+      font-size: 10px !important;
+      line-height: 1.2 !important;
     }
-    .app-shell.is-home .live-header {
-      margin-bottom: 6px !important;
+    .app-shell.is-home .home-footer > div:nth-child(1),
+    .app-shell.is-home .home-footer > div:nth-child(2) {
+      display: none;
     }
-    .app-shell.is-home .room-board {
-      display: grid !important;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 6px !important;
-      margin-top: 0 !important;
-      max-height: 132px;
-      overflow-y: auto;
+    .app-shell.is-home .home-footer .version-badge {
+      margin-top: 0;
+      padding: 1px 8px;
+      font-size: 10px;
     }
-    .app-shell.is-home .room-row {
-      padding: 7px 9px !important;
-      min-height: 44px !important;
-      border-radius: 11px !important;
+    .home-footer {
+      text-align: center;
+      padding: 6px 8px 4px;
+      color: #78909C;
+      font-size: 11px;
+      line-height: 1.55;
     }
-    .app-shell.is-home .room-name {
-      font-size: 11px !important;
+    .home-footer b {
+      color: var(--kddw-navy);
+      font-weight: 700;
+    }
+    .version-badge {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--kddw-navy);
+      background: var(--kddw-soft);
+      border: 1px solid var(--kddw-border-blue);
+      padding: 2px 9px;
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+      font-variant-numeric: tabular-nums;
+    }
+    .home-map-btn {
+      width: 100%;
+      flex-shrink: 0;
+      margin-top: 4px;
+      padding: 13px 15px;
+      border-radius: 18px;
+      border: 1.5px solid var(--kddw-border-blue);
+      background: linear-gradient(135deg, #F0F7FE 0%, #F8FAFC 100%);
+      box-shadow: 0 6px 16px rgba(15, 61, 110, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: transform 0.12s ease;
+    }
+    .home-map-btn:active { transform: scale(0.98); }
+    .home-map-left {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+    .home-map-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, #0F3D6E 0%, #1B6BB5 100%);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 10px rgba(27, 107, 181, 0.22);
+    }
+    .home-map-title {
+      font-size: 14.5px;
+      font-weight: 800;
+      color: var(--kddw-navy);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .home-map-sub {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--kddw-slate);
+      margin-top: 2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .app-shell.is-home .room-session-title {
-      font-size: 11.5px !important;
-      margin-top: 3px !important;
-      display: -webkit-box;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+    .home-map-pill {
+      flex-shrink: 0;
+      font-size: 12px;
+      font-weight: 800;
+      color: #FFFFFF;
+      background: var(--kddw-cobalt);
+      padding: 6px 11px;
+      border-radius: 999px;
+      white-space: nowrap;
     }
-    .app-shell.is-home .room-session-time {
-      font-size: 10px !important;
+    .session-card.is-jumped {
+      border: 2px solid #E11D48;
+      border-left: 6px solid #E11D48;
+      box-shadow: 0 4px 16px rgba(225, 29, 72, 0.22);
+    }
+    .sheet-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .sheet-actions .sheet-cta { margin-top: 0; }
+    .sheet-cta.add { flex: 1; }
+    .sheet-cta.remove { flex: 1; }
+    .sheet-cta.close-btn { background: #E2E8F0; color: #1E293B; flex: 0 0 88px; }
+    .sheet-top-close {
+      border: 1px solid #CBD5E1;
+      background: #F1F5F9;
+      color: #1E293B;
+      border-radius: 999px;
+      padding: 5px 11px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
   </style>
 </head>
 <body>
-  <div class="app-shell">
+  <div class="app-shell is-home">
     <!-- Sticky Header -->
     <header class="top-header">
       <div class="brand-bar">
         <div class="brand-left" onclick="switchTab('home')">
           <img src="./assets/logo_kddw2026.png" alt="KDDW 2026" class="brand-logo" />
-          <span class="brand-date-pill">Nov 19–21</span>
+          <span class="brand-date-pill" id="headerDdayBadge">Nov 19–21</span>
         </div>
         <div style="display:flex;align-items:center;gap:6px;"><button class="lang-btn" style="padding:5px 9px;" onclick="forceRefresh()" title="Refresh" aria-label="Refresh">↻</button><button id="langToggleBtn" class="lang-btn" onclick="toggleLang()">EN</button></div>
       </div>
@@ -711,6 +847,7 @@
   <div class="toast" id="toast"></div>
 
   <script>
+    const APP_VERSION = 'v1.2.0';
     const STORAGE_KEY_SAVED = 'kddw2026_saved_sessions_v1';
     const STORAGE_KEY_LANG = 'kddw2026_lang_v1';
 
@@ -796,7 +933,9 @@
         societiesTitle: '주최 및 주관 (8개 소화기 연관학회)',
         societiesList: '대한소화기학회(KSG) · 대한소화기내시경학회(KSGE) · 대한간학회(KASL) · 대한췌장담도학회(KPBA) · 대한소화기기능성질환·운동학회(KSNM) · 대한상부위장관·헬리코박터학회(KCHUGR) · 대한장연구학회(KASID) · 대한소화기암연구학회(KSGC)',
         officialTitle: '공식 홈페이지',
-        openWeb: 'kddw.org 열기 ↗'
+        openWeb: 'kddw.org 열기 ↗',
+        footerOrg: '주최: 대한소화기연관학회 (8개 소화기 연관학회)',
+        footerCopy: 'KDDW 2026 · The 10th Korea Digestive Disease Week'
       },
       en: {
         navHome: 'Home',
@@ -861,7 +1000,9 @@
         societiesTitle: 'Hosting & Participating Societies (8 Societies)',
         societiesList: 'KSG · KSGE · KASL · KPBA · KSNM · KCHUGR · KASID · KSGC',
         officialTitle: 'Official Website',
-        openWeb: 'Visit kddw.org ↗'
+        openWeb: 'Visit kddw.org ↗',
+        footerOrg: 'Hosted by 8 Korea Digestive Disease Societies',
+        footerCopy: 'KDDW 2026 · The 10th Korea Digestive Disease Week'
       }
     };
 
@@ -1137,6 +1278,22 @@
       return getCurrentKstParts();
     }
 
+    function jumpToProgramSession(sessionId, dayNum) {
+      closeDetail();
+      selectedDay = dayNum || 1;
+      trackFilter = 'ALL';
+      searchQuery = '';
+      switchTab('program');
+      setTimeout(() => {
+        const el = document.getElementById('session-card-' + sessionId);
+        if (el) {
+          el.classList.add('is-jumped');
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => el.classList.remove('is-jumped'), 2800);
+        }
+      }, 60);
+    }
+
     function renderRoomBoardForDay(dayNum, kst, isKo) {
       const daySessions = SESSIONS.filter((s) => s.day === dayNum).sort((a, b) => toMin(a.start) - toMin(b.start));
       const rooms = [...new Set(daySessions.map((s) => s.room))];
@@ -1149,13 +1306,13 @@
           const rem = Math.max(1, toMin(live.end) - kst.mins);
           return {
             rank: 0,
-            html: '<div class="room-row is-live" onclick="openDetail(\'' + live.id + '\')">' +
+            html: '<div class="room-row is-live" onclick="jumpToProgramSession(\'' + live.id + '\', ' + live.day + ')">' +
               '<div class="room-row-top">' +
                 '<span class="room-name">📍 ' + room + '</span>' +
-                '<span class="room-status live">● ' + (isKo ? '진행 중 ' + pct + '%' : 'LIVE ' + pct + '%') + '</span>' +
+                '<span class="room-status live">● ' + (isKo ? '실시간 강의 ' + pct + '%' : 'LIVE ' + pct + '%') + '</span>' +
               '</div>' +
               '<div class="room-session-title">' + live.title + '</div>' +
-              '<div class="room-session-time"><span>🕒 ' + live.start + '–' + live.end + '</span><span>' + (isKo ? rem + '분 남음' : rem + 'm left') + '</span></div>' +
+              '<div class="room-session-time" style="margin-top:5px;"><span>🕒 ' + live.start + '–' + live.end + ' (' + (isKo ? rem + '분 남음' : rem + 'm left') + ')</span><span style="color:#E11D48;font-weight:800;">' + (isKo ? '프로그램 이동 ›' : 'Go to Program ›') + '</span></div>' +
               '<div class="live-progress"><div class="live-progress-bar" style="width:' + pct + '%;"></div></div>' +
             '</div>'
           };
@@ -1165,26 +1322,26 @@
           const wait = toMin(next.start) - kst.mins;
           return {
             rank: 1,
-            html: '<div class="room-row is-next" onclick="openDetail(\'' + next.id + '\')">' +
+            html: '<div class="room-row is-next" onclick="jumpToProgramSession(\'' + next.id + '\', ' + next.day + ')">' +
               '<div class="room-row-top">' +
                 '<span class="room-name">📍 ' + room + '</span>' +
-                '<span class="room-status next">⏳ ' + (isKo ? wait + '분 후' : 'in ' + wait + 'm') + '</span>' +
+                '<span class="room-status next">⏳ ' + (isKo ? wait + '분 후 시작' : 'in ' + wait + 'm') + '</span>' +
               '</div>' +
               '<div class="room-session-title">' + next.title + '</div>' +
-              '<div class="room-session-time"><span>🕒 ' + next.start + '–' + next.end + '</span><span>' + (isKo ? '다음 일정' : 'Up Next') + '</span></div>' +
+              '<div class="room-session-time" style="margin-top:4px;"><span>🕒 ' + next.start + '–' + next.end + '</span><span style="color:#1B6BB5;font-weight:800;">' + (isKo ? '프로그램 이동 ›' : 'Go to Program ›') + '</span></div>' +
             '</div>'
           };
         }
         const last = rs[rs.length - 1];
         return {
           rank: 2,
-          html: '<div class="room-row" onclick="openDetail(\'' + last.id + '\')">' +
+          html: '<div class="room-row" onclick="jumpToProgramSession(\'' + last.id + '\', ' + last.day + ')">' +
             '<div class="room-row-top">' +
               '<span class="room-name">📍 ' + room + '</span>' +
               '<span class="room-status done">✓ ' + (isKo ? '종료' : 'Ended') + '</span>' +
             '</div>' +
             '<div class="room-session-title" style="color:#64748B;">' + last.title + '</div>' +
-            '<div class="room-session-time"><span>🕒 ' + last.start + '–' + last.end + '</span><span>' + (isKo ? '오늘 일정 완료' : 'Done for today') + '</span></div>' +
+            '<div class="room-session-time"><span>🕒 ' + last.start + '–' + last.end + '</span><span style="color:#0F3D6E;font-weight:700;">' + (isKo ? '프로그램 이동 ›' : 'Go to Program ›') + '</span></div>' +
           '</div>'
         };
       });
@@ -1327,15 +1484,45 @@
       render();
     }
 
+    function openWalkerhillMapSheet() {
+      const t = T[lang];
+      const isKo = lang === 'ko';
+      const closeLabel = isKo ? '닫기' : 'Close';
+      document.getElementById('detailContent').innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div class="venue-kicker">${t.venueKicker}</div>
+          <button class="sheet-top-close" onclick="closeDetail()">✕ ${closeLabel}</button>
+        </div>
+        <h2 style="font-size:17px;font-weight:800;color:#0F3D6E;margin:8px 0 4px;line-height:1.35;">🗺 ${t.venueName}</h2>
+        <p style="font-size:13px;color:#546E7A;margin:0;line-height:1.45;">${t.venueAddr}</p>
+        <div class="btn-grid" style="margin-top:14px;">
+          <a class="action-btn action-primary" target="_blank" rel="noopener"
+             href="https://maps.google.com/?q=Grand+Walkerhill+Seoul">🗺 ${t.openGoogleMap}</a>
+          <button class="action-btn action-soft" onclick="copyAddress()">📋 ${t.copyAddr}</button>
+          <a class="action-btn action-outline" target="_blank" rel="noopener"
+             href="https://map.naver.com/p/search/%EA%B7%B8%EB%9E%9C%EB%93%9C%20%EC%9B%8C%EC%BB%A4%ED%9E%90%20%EC%84%9C%EC%9A%B8">🟢 ${t.openNaverMap}</a>
+          <a class="action-btn action-outline" target="_blank" rel="noopener"
+             href="https://map.kakao.com/?q=%EA%B7%B8%EB%9E%9C%EB%93%9C%20%EC%9B%8C%EC%BB%A4%ED%9E%90%20%EC%84%9C%EC%9A%B8">🟡 ${t.openKakaoMap}</a>
+        </div>
+        <div class="hall-box" style="margin-top:12px;">
+          <div style="font-size:13.5px;font-weight:800;color:#0F3D6E;">🚌 ${t.shuttleTitle}</div>
+          <div class="hall-desc" style="margin-top:6px;line-height:1.65;">${t.shuttleDesc}</div>
+        </div>
+        <button class="sheet-cta close-btn" style="width:100%;margin-top:14px;" onclick="closeDetail()">${closeLabel}</button>
+      `;
+      document.getElementById('detailBackdrop').classList.add('open');
+    }
+
     function openDetail(id) {
       const s = SESSIONS.find((x) => x.id === id);
       if (!s) return;
       const t = T[lang];
       const isSaved = savedIds.has(s.id);
+      const closeLabel = lang === 'ko' ? '닫기' : 'Close';
       document.getElementById('detailContent').innerHTML = `
         <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
           <div class="badges"><span class="cat-badge">${s.category}</span></div>
-          <button onclick="closeDetail()" style="border:none;background:#F1F5F9;color:#475569;border-radius:999px;width:28px;height:28px;font-weight:700;cursor:pointer;">✕</button>
+          <button class="sheet-top-close" onclick="closeDetail()">✕ ${closeLabel}</button>
         </div>
         <h2 style="font-size:17px;font-weight:800;color:#0F3D6E;margin:10px 0 4px;line-height:1.35;">${s.title}</h2>
         <p style="font-size:13px;color:#546E7A;margin:0;line-height:1.4;">${s.subtitle}</p>
@@ -1348,9 +1535,12 @@
             <td><ul class="talk-list">${s.talks.map((tk) => `<li>${tk}</li>`).join('')}</ul></td>
           </tr>
         </table>
-        <button class="sheet-cta ${isSaved ? 'remove' : 'add'}" onclick="toggleSave('${s.id}'); openDetail('${s.id}');">
-          ${isSaved ? t.removeFromMy : t.addToMy}
-        </button>
+        <div class="sheet-actions">
+          <button class="sheet-cta ${isSaved ? 'remove' : 'add'}" onclick="toggleSave('${s.id}'); openDetail('${s.id}');">
+            ${isSaved ? t.removeFromMy : t.addToMy}
+          </button>
+          <button class="sheet-cta close-btn" onclick="closeDetail()">${closeLabel}</button>
+        </div>
       `;
       document.getElementById('detailBackdrop').classList.add('open');
     }
@@ -1412,18 +1602,28 @@
     function setMyDay(d) { mySelectedDay = d; render(); }
     function setTrackFilter(tr) { trackFilter = tr; render(); }
 
+    let liveSheetDay = 3;
+    function setLiveDay(d) {
+      liveSheetDay = d;
+      render();
+    }
+
     function renderBodyOnly() {
       const t = T[lang];
       const main = document.getElementById('mainContent');
 
-      // HOME SCREEN
+      // HOME SCREEN (Zero-Scroll 2x2 Official Mobile Layout — IPBM2027 Skeleton)
       if (currentTab === 'home') {
+        const liveLabel = lang === 'ko' ? '방별 실시간 현황' : 'Live by Room';
         main.innerHTML = `
           <div class="home-wrap">
-            <section class="home-visual-card"><img src="./assets/home_visual.png" alt="KDDW 2026 Official Visual" class="home-visual-img" /></section>
+            <section class="home-visual-card">
+              <img src="./assets/home_visual.png" alt="KDDW 2026 Official Visual" class="home-visual-img" />
+            </section>
 
             <section class="home-menu-grid">
               <button class="home-tile tile-program" onclick="switchTab('program')">
+                <div class="home-tile-label">${t.tileProgram}</div>
                 <div class="home-tile-icon">
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="4" width="18" height="18" rx="3"></rect>
@@ -1434,20 +1634,33 @@
                     <line x1="8" y1="18" x2="13" y2="18"></line>
                   </svg>
                 </div>
-                <div class="home-tile-label">${t.tileProgram}</div>
               </button>
 
               <button class="home-tile tile-my" onclick="switchTab('my')">
                 ${savedIds.size > 0 ? `<span class="home-tile-badge">${savedIds.size}</span>` : ''}
+                <div class="home-tile-label">${t.tileMy}</div>
                 <div class="home-tile-icon">
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M12 2.5l2.92 5.92 6.53.95-4.72 4.6 1.11 6.5L12 17.4l-5.84 3.07 1.11-6.5-4.72-4.6 6.53-.95L12 2.5z"/>
                   </svg>
                 </div>
-                <div class="home-tile-label">${t.tileMy}</div>
+              </button>
+
+              <button class="home-tile tile-live" onclick="switchTab('live')">
+                <div class="home-tile-label">${liveLabel}</div>
+                <div class="home-tile-icon">
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M16.24 7.76a6 6 0 0 1 0 8.49"></path>
+                    <path d="M7.76 16.24a6 6 0 0 1 0-8.49"></path>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                    <path d="M4.93 19.07a10 10 0 0 1 0-14.14"></path>
+                  </svg>
+                </div>
               </button>
 
               <button class="home-tile tile-info" onclick="switchTab('venue')">
+                <div class="home-tile-label">${t.tileInfo}</div>
                 <div class="home-tile-icon">
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
@@ -1455,15 +1668,50 @@
                     <line x1="12" y1="8" x2="12.01" y2="8"></line>
                   </svg>
                 </div>
-                <div class="home-tile-label">${t.tileInfo}</div>
               </button>
             </section>
 
-            ${renderHomeInstallBtn()}
+            <!-- Grand Walkerhill Seoul Map Button -->
+            <button class="home-map-btn" onclick="openWalkerhillMapSheet()">
+              <div class="home-map-left">
+                <div class="home-map-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </div>
+                <div style="min-width:0;">
+                  <div class="home-map-title">${lang === 'ko' ? '그랜드 워커힐 서울 지도' : 'Grand Walkerhill Seoul Map'}</div>
+                  <div class="home-map-sub">${lang === 'ko' ? '광나루·강변역 무료 셔틀 및 길찾기 안내' : 'Directions & Free Subway Shuttle Info'}</div>
+                </div>
+              </div>
+              <span class="home-map-pill">${lang === 'ko' ? '지도 ›' : 'Map ›'}</span>
+            </button>
 
-            ${renderLiveWidget()}
+            <footer class="home-footer">
+              <div><b>${t.footerOrg}</b></div>
+              <div>${t.footerCopy}</div>
+              <div><span class="version-badge">KDDW 2026 App ${APP_VERSION}</span></div>
+            </footer>
           </div>
         `;
+        return;
+      }
+
+      // LIVE BY ROOM TAB (Dedicated Full Screen Page)
+      if (currentTab === 'live') {
+        const isKo = lang === 'ko';
+        const realKst = getCurrentKstParts();
+        const realActiveDay = Number(Object.keys(DAY_DATES).find((k) => DAY_DATES[k] === realKst.dateStr)) || 0;
+        const targetDay = realActiveDay > 0 ? realActiveDay : liveSheetDay;
+        const effectiveMins = (realKst.mins >= 8 * 60 + 30 && realKst.mins < 16 * 60 + 40)
+          ? realKst.mins
+          : 9 * 60 + 25;
+        const effH = String(Math.floor(effectiveMins / 60)).padStart(2, '0');
+        const effM = String(effectiveMins % 60).padStart(2, '0');
+        const effKst = { dateStr: DAY_DATES[targetDay], hhmm: `${effH}:${effM}`, mins: effectiveMins };
+
+        main.innerHTML = renderRoomBoardForDay(targetDay, effKst, isKo);
         return;
       }
 
@@ -1496,7 +1744,7 @@
               const isSaved = savedIds.has(s.id);
               const isLive = liveIdSet.has(s.id);
               return `
-                <article class="session-card tone-${s.tone} ${isSaved ? 'saved' : ''} ${isLive ? 'is-live' : ''}" onclick="openDetail('${s.id}')">
+                <article id="session-card-${s.id}" class="session-card tone-${s.tone} ${isSaved ? 'saved' : ''} ${isLive ? 'is-live' : ''}" onclick="openDetail('${s.id}')">
                   <div class="card-top">
                     <div class="badges">
                       ${isLive ? `<span class="live-inline-badge"><span class="live-dot"></span> ${t.liveNow}</span>` : ''}
@@ -1611,7 +1859,22 @@
             <a class="action-btn action-primary" style="width:100%;" target="_blank" rel="noopener" href="https://www.kddw.org">${t.openWeb}</a>
           </div>
         </section>
+
+        <footer class="home-footer">
+          <div><b>${t.footerOrg}</b></div>
+          <div><span class="version-badge">KDDW 2026 App ${APP_VERSION}</span></div>
+        </footer>
       `;
+    }
+
+    function getHeaderDDayText() {
+      const kst = getCurrentKstParts();
+      if (kst.dateStr === '2026-11-19' || kst.dateStr === '2026-11-20' || kst.dateStr === '2026-11-21') return 'D-DAY';
+      const d1 = new Date('2026-11-19T00:00:00+09:00');
+      const dn = new Date(kst.dateStr + 'T00:00:00+09:00');
+      const diff = Math.round((d1 - dn) / 86400000);
+      if (diff > 0) return 'D-' + diff;
+      return 'Nov 19–21';
     }
 
     function render() {
@@ -1619,6 +1882,9 @@
       document.documentElement.lang = lang;
       const shellEl = document.querySelector('.app-shell');
       if (shellEl) shellEl.classList.toggle('is-home', currentTab === 'home');
+      document.body.classList.toggle('home-locked', currentTab === 'home');
+      const ddayEl = document.getElementById('headerDdayBadge');
+      if (ddayEl) ddayEl.textContent = getHeaderDDayText();
       document.getElementById('langToggleBtn').textContent = lang === 'ko' ? 'EN' : '한국어';
       document.getElementById('savedCountBadge').textContent = savedIds.size;
 
@@ -1635,6 +1901,15 @@
         subHeader.classList.add('hidden');
         subHeader.innerHTML = '';
         dayTabsEl.innerHTML = '';
+        filterEl.innerHTML = '';
+      } else if (currentTab === 'live') {
+        const isKo = lang === 'ko';
+        subHeader.classList.remove('hidden');
+        subHeader.innerHTML = `
+          <div class="page-title">${isKo ? '방별 실시간 현황' : 'Live by Room'}</div>
+          <div class="page-subtitle">${isKo ? '강의를 누르면 프로그램 화면으로 바로 이동합니다' : 'Tap any room lecture to jump directly to Program'}</div>
+        `;
+        dayTabsEl.innerHTML = renderDayTabsHTML(liveSheetDay, 'setLiveDay', false);
         filterEl.innerHTML = '';
       } else if (currentTab === 'program') {
         subHeader.classList.remove('hidden');
